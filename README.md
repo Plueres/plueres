@@ -26,3 +26,5 @@ Here are some ideas to get you started:
 
 ### Links
 README widgets: https://github.com/madushadhanushka/github-readme
+
+[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=plueres&repo=github-readme-stats)](https://github.com/plueres/github-readme-stats)
