@@ -16,6 +16,7 @@ Here are some ideas to get you started:
 -->
 
 <img src="https://github-readme-streak-stats.herokuapp.com/?user=Plueres&theme=dark&hide_border=true" width="50%" ><img width="50%" src="https://github-readme-stats.vercel.app/api?username=Plueres&theme=dark&show_icons=true&hide_border=true&count_private=true&include_all_commits=true" /> 
+
 [![Contribution](https://activity-graph.herokuapp.com/graph?username=Plueres&theme=dark&hide_border=true&area=true)](https://github.com/anuraghazra/github-readme-stats)
 
 
