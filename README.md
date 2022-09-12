@@ -15,7 +15,7 @@ Here are some ideas to get you started:
 - ⚡ Fun fact: ...
 -->
 
-<img src="https://github-readme-stats.vercel.app/api?username=Plueres&show_icons=true" width="49%"/> <img src="https://github-readme-streak-stats.herokuapp.com/?user=Plueres" width="49%" >
+<img src="https://github-readme-stats.vercel.app/api?username=Plueres&show_icons=true&theme='gotham'" width="49%"/> <img src="https://github-readme-streak-stats.herokuapp.com/?user=Plueres&theme='gotham'" width="49%" >
 
 <img height="165em" src="https://github-readme-stats.vercel.app/api?username=Plueres&theme=tokyonight&show_icons=true&hide_border=true&count_private=true&include_all_commits=true" /> [![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=Plueres&theme=tokyonight&hide_border=true&layout=compact)](https://github.com/anuraghazra/github-readme-stats)
 
