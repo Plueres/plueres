@@ -1,7 +1,4 @@
-<img src="https://github.com/Plueres/plueres/blob/9b96cea9145453ace737bb20c30ef153d5a9a6f1/header.png"/>
-
-
-### Hi there 👋
+<img src="https://github.com/Plueres/plueres/blob/9b96cea9145453ace737bb20c30ef153d5a9a6f1/header.png" width="100%"/>
 
 <!--
 **Plueres/plueres** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
@@ -18,7 +15,7 @@ Here are some ideas to get you started:
 - ⚡ Fun fact: ...
 -->
 
-<img src="https://github-readme-streak-stats.herokuapp.com/?user=Plueres&theme=vision-friendly-dark&hide_border=true" width="50%" ><img width="50%" src="https://github-readme-stats.vercel.app/api?username=Plueres&theme=vision-friendly-dark&show_icons=true&hide_border=true&count_private=true&include_all_commits=true" /> 
+<img src="https://github-readme-streak-stats.herokuapp.com/?user=Plueres&theme=vision-friendly-dark&hide_border=true" width="49%" ><img width="49%" src="https://github-readme-stats.vercel.app/api?username=Plueres&theme=vision-friendly-dark&show_icons=true&hide_border=true&count_private=true&include_all_commits=true" /> 
 
 
 <!--
