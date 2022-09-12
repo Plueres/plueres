@@ -17,13 +17,11 @@ Here are some ideas to get you started:
 
 <img src="https://github-readme-streak-stats.herokuapp.com/?user=Plueres&theme=vision-friendly-dark&hide_border=true" width="50%" ><img width="50%" src="https://github-readme-stats.vercel.app/api?username=Plueres&theme=vision-friendly-dark&show_icons=true&hide_border=true&count_private=true&include_all_commits=true" /> 
 
-[![Spotify](https://novatorem.bgstatic.vercel.app/api/spotify)](https://open.spotify.com/artist/5msHhK18amqcRvl1iznOWr?si=SvF3HJL5RsOq6kQOhQYZvw)
-
 
 <!--
 [![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=Plueres&theme=dark&hide_border=true&layout=compact)](https://github.com/anuraghazra/github-readme-stats)
 <img src="https://github-readme-stats.vercel.app/api/top-langs?username=Plueres&show_icons=true&locale=en&layout=compact&theme=chartreuse-dark" alt="ovi" />
-<img src="https://img.shields.io/twitter/follow/_Rickname_?logo=twitter&style=for-the-badge" alt="_Rickname_" /> -->
+<img src="https://img.shields.io/twitter/follow/_Rickname_?logo=twitter&style=for-the-badge" alt="Follow _Rickname_ on twitter" /> -->
 
 
 ### Links
