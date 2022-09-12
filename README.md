@@ -17,7 +17,8 @@ Here are some ideas to get you started:
 
 <img src="https://github-readme-streak-stats.herokuapp.com/?user=Plueres&theme=gruvbox" width="48%" ><img width="48%" src="https://github-readme-stats.vercel.app/api?username=Plueres&theme=gruvbox&show_icons=true&hide_border=true&count_private=true&include_all_commits=true" /> 
 [![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=Plueres&theme=gruvbox&hide_border=true&layout=compact)](https://github.com/anuraghazra/github-readme-stats)
-[![Contribution](https://activity-graph.herokuapp.com/graph?username=Plueres&theme=react-dark&hide_border=true&area=true)](https://github.com/anuraghazra/github-readme-stats)
+[![Contribution](https://activity-graph.herokuapp.com/graph?username=Plueres&theme=gruvbox&hide_border=true&area=true)](https://github.com/anuraghazra/github-readme-stats)
+
 
 [![Snake animation](https://github.com/Plueres/github-readme/blob/output/github-contribution-snake.svg)]()
 
