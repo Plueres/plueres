@@ -1,5 +1,5 @@
-<img src="https://github.com/Plueres/plueres/blob/9b96cea9145453ace737bb20c30ef153d5a9a6f1/header.png" width="100%" border-radius="10px"/>
-
+<img src="https://github.com/Plueres/plueres/blob/9b96cea9145453ace737bb20c30ef153d5a9a6f1/header.png" width="100%"/>
+<img src="https://img.shields.io/twitter/follow/_Rickname_?logo=twitter&style=for-the-badge" alt="Follow _Rickname_ on twitter" />
 <!--
 **Plueres/plueres** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
