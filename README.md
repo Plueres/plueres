@@ -19,7 +19,7 @@ Here are some ideas to get you started:
 [![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=Plueres&theme=gruvbox&hide_border=true&layout=compact)](https://github.com/anuraghazra/github-readme-stats)
 [![Contribution](https://activity-graph.herokuapp.com/graph?username=Plueres&theme=react-dark&hide_border=true&area=true)](https://github.com/anuraghazra/github-readme-stats)
 
-[![Snake animation](https://github.com/madushadhanushka/github-readme/blob/output/github-contribution-snake.svg)](google.com)
+[![Snake animation](https://github.com/plueres/github-readme/blob/output/github-contribution-snake.svg)](google.com)
 
 
 <!--
