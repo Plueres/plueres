@@ -17,7 +17,7 @@ Here are some ideas to get you started:
 
 <img src="https://github-readme-streak-stats.herokuapp.com/?user=Plueres&theme=vision-friendly-dark&hide_border=true" width="50%" ><img width="50%" src="https://github-readme-stats.vercel.app/api?username=Plueres&theme=vision-friendly-dark&show_icons=true&hide_border=true&count_private=true&include_all_commits=true" /> 
 
-![Contribution](https://activity-graph.herokuapp.com/graph?username=Plueres&theme=vision-friendly-dark&hide_border=true&area=true)
+![Contribution](https://activity-graph.herokuapp.com/graph?username=Plueres&hide_border=true)
 
 
 [![Snake animation](https://github.com/Plueres/github-readme/blob/output/github-contribution-snake.svg)]()
@@ -27,11 +27,6 @@ Here are some ideas to get you started:
 [![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=Plueres&theme=dark&hide_border=true&layout=compact)](https://github.com/anuraghazra/github-readme-stats)
 <img src="https://github-readme-stats.vercel.app/api/top-langs?username=Plueres&show_icons=true&locale=en&layout=compact&theme=chartreuse-dark" alt="ovi" />
 <img src="https://img.shields.io/twitter/follow/_Rickname_?logo=twitter&style=for-the-badge" alt="_Rickname_" /> -->
-
-
-![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=anuraghazra&show_icons=true&theme=dark)![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=anuraghazra&show_icons=true&theme=radical)![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=anuraghazra&show_icons=true&theme=merko)![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=anuraghazra&show_icons=true&theme=gruvbox)![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=anuraghazra&show_icons=true&theme=tokyonight)![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=anuraghazra&show_icons=true&theme=onedark)![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=anuraghazra&show_icons=true&theme=cobalt)![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=anuraghazra&show_icons=true&theme=synthwave)![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=anuraghazra&show_icons=true&theme=highcontrast)![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=anuraghazra&show_icons=true&theme=dracula)
-
-
 
 
 ### Links
