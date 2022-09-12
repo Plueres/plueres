@@ -23,7 +23,7 @@ Here are some ideas to get you started:
 <img src="https://github-readme-stats.vercel.app/api/top-langs?username=Plueres&show_icons=true&locale=en&layout=compact&theme=chartreuse-dark" alt="ovi" />
 <img src="https://img.shields.io/twitter/follow/_Rickname_?logo=twitter&style=for-the-badge" alt="Follow _Rickname_ on twitter" /> -->
 
+[![spotify-github-profile](https://spotify-github-profile.vercel.app/api/view?uid=rr6dpm9sb1r6419kubm7jbw4s&cover_image=true&theme=novatorem&bar_color=53b14f&bar_color_cover=true)](https://github.com/kittinan/spotify-github-profile)
 
 ### Links
 README widgets: https://github.com/madushadhanushka/github-readme
-
