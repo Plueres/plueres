@@ -27,4 +27,4 @@ Here are some ideas to get you started:
 ### Links
 README widgets: https://github.com/madushadhanushka/github-readme
 
-[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=plueres&repo=Visual-Attributes)](https://github.com/Plueres/Visual-Attributes)
+[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=plueres&repo=visual-attributes)](https://github.com/Plueres/Visual-Attributes)
