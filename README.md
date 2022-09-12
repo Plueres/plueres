@@ -20,6 +20,6 @@ Here are some ideas to get you started:
 ### Github Streaks
 <img src="https://github-readme-streak-stats.herokuapp.com/?user=Plueres&theme=dark" width="48%" >
 ### Top Languages
- ![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=Plueres&layout=compact)
+<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Plueres&layout=compact" alt="github stats" width="45%" align="middle"/>
 
 
