@@ -1,7 +1,9 @@
 //QUICK MENU
 //By: Plueres
-//Version: 1.0
+//Version: 1.1
 //Next update: Quest section in the cococrab menu, favorites file
+
+
 Month_Name = function(monthname)
 	if monthname == "01" then
 		return "Jan"
@@ -215,6 +217,41 @@ Space_Module = function
 	while true
 		yield
 	end while
+end function
+PLC_Settings = function 
+	clear
+	print "1 - Timegraph"
+	breakline
+	print "2 - Check if you can travel to a certain year (currently not working properly)"
+	breakline
+	print "3 - Car Diagnostics"
+	breakline
+	breakline
+	checkTimeChoice = readkey
+	if checkTimeChoice.val == 1 then
+		bgcolor 0,0,0
+		timegraph
+		while true
+			clear
+			yield
+		end while
+	else if checkTimeChoice.val == 2 then
+		print "Enter a year"
+		checkTimeYearChoice = readline
+		if cantravel(checkTimeYearChoice) == 1 then
+			print "Yes"
+			wait
+			Check_Time
+		else
+			print "No"
+			wait
+			Check_Time
+		end if
+	else if checkTimeChoice.val == 3 then
+		cardiag
+		wait
+		Check_Time
+	end if
 end function
 Create_Chip = function
 	clear
@@ -881,7 +918,7 @@ main = function
 	breakline
 	print "4 - Return to the Safe House from Space Travel"
 	breakline
-	print "5 - Check Timegraph"
+	print "5 - PLC Settings"
 	breakline
 	print "6 - HVD Chip Settings"
 	breakline
@@ -903,12 +940,7 @@ main = function
 		dialgate "xxxxx"
 		wait 2
 	else if mainChoice.val == 5 then
-		bgcolor 0,0,0
-		timegraph
-		while true
-			clear
-			yield
-		end while
+		PLC_Settings
 	else if mainChoice.val == 6 then
 		Create_Chip
 	else if mainChoice.val == 7 then
