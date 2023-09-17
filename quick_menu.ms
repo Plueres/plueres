@@ -1,6 +1,6 @@
 //QUICK MENU
 //By: Plueres
-//Version: 1.1
+//Version: 1.05 beta
 //Next update: Quest section in the cococrab menu, favorites file
 
 
