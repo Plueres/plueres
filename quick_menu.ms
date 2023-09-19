@@ -1,9 +1,7 @@
 //QUICK MENU
 //By: Plueres
-//Version: 1.05 beta
-//Next update: Quest section in the cococrab menu, favorites file
-
-
+//Version: 1.1
+//Next update: favorites file
 Month_Name = function(monthname)
 	if monthname == "01" then
 		return "Jan"
@@ -33,7 +31,7 @@ Month_Name = function(monthname)
 end function
 Time_Module = function
 	clear
-	wait //Wait for connection
+	wait 1.5 //Wait for connection
 	print "You chose Time Travel"
 	breakline
 	print "Connection status: "
@@ -46,9 +44,7 @@ Time_Module = function
 	breakline
 	print "0 - Back"
 	Time_Module_Choice = readkey
-
 	if Time_Module_Choice.val == 1 then
-
 		//Start random time travel calculations
 		RandomTime = function(timeNumber, length=2)
 			//Convert number to string
@@ -151,7 +147,6 @@ Time_Module = function
 			print "This is not a valid day"
 			wrong
 		end if
-
 		clear
 		dialgate Month + Day + Year + Hour + Minute
 		breakline
@@ -176,6 +171,7 @@ Time_Module = function
 end function
 Space_Module = function
 	clear
+	wait 1.5 //Wait for connection
 	print "You chose Space Travel"
 	breakline
 	print "Connection status: "
@@ -519,55 +515,126 @@ Cococrab_Menu = function
 	else if CococrabMenuChoice.val == 7 then 
 		Car_Settings
 	else if CococrabMenuChoice.val == 9 then
-		clear
 		Cococrab_Menu2
 	else 
 		main
 	end if
 end function
 Cococrab_Menu2 = function
-
+	clear
 	print "Cococrab Mode is enabled"
 	breakline
 	print "Page 2"
 	breakline
-	print "Select with numbers (0-9)"
+	print "Select with numbers (0-3)"
 	breakline
-	print "1 - Get current quest name and ID (Not currently supported)"
+	print "1 - Change time speed"
 	breakline
-	print "2 - Set current quest progress (Not currently supported)"
+	print "2 - Get current quest name and ID (Not currently supported)"
+	breakline
+	print "3 - Set current quest progress (Not currently supported)"
 	breakline
 	print "0 - Back"
 	wait 0
 	CococrabMenu2Choice = readkey
 
 	if CococrabMenu2Choice.val == 1 then
-		print "Current location is: "
-		cocotransport		
+		clear
+		print "Change time speed to:"
+		breakline
+		print "1 - Default"
+		breakline
+		print "2 - 0.5x Speed"
+		breakline
+		print "3 - 2x Speed"
+		breakline
+		print "4 - 4x Speed"
+		breakline
+		print "5 - 10x Speed"
+		breakline
+		print "6 - Own input"
+		breakline
+		print "0 - Back"
+		wait 0
+		changeTimeSpeedChoice = readkey
+		breakline
+
+		if changeTimeSpeedChoice.val == 1 then
+			cocospeed 1.0
+			wait
+			Cococrab_Menu2
+		else if changeTimeSpeedChoice.val == 2 then
+			cocospeed 0.5
+			wait
+			Cococrab_Menu2
+		else if changeTimeSpeedChoice.val == 3 then
+			cocospeed 2.0
+			wait
+			Cococrab_Menu2
+		else if changeTimeSpeedChoice.val == 4 then
+			cocospeed 4.0
+			wait
+			Cococrab_Menu2
+		else if changeTimeSpeedChoice.val == 5 then
+			cocospeed 10.0
+			wait
+			Cococrab_Menu2
+		else if changeTimeSpeedChoice.val == 6 then
+			breakline
+			print "Enter a value"
+			breakline
+			print "Values above 1,000,000 can cause severe lag. And values around 1,000,000,000,000 may freeze/crash the game. This may differ per device"
+			breakline
+			wait 0
+			changeTimeSpeedOwnInput = readline
+			cocospeed changeTimeSpeedOwnInput.val
+			wait
+			Cococrab_Menu2
+		else
+			Cococrab_Menu2
+		end if
 	else if CococrabMenu2Choice.val == 2 then
-		print "Current car location is: "
-		cococarport
-	else if CococrabMenu2Choice.val == 3 then
-		print "Enter a location (X, Y, Z)"
-		wait 0
-		playerLocation = readline
-		cocotransport + playerLocation
-	else if CococrabMenu2Choice.val == 4 then
-		print "Enter a location for the car (X, Y, Z)"
-		wait 0
-		carLocation = readline
-		cococarport + carLocation
-	else if CococrabMenu2Choice.val == 5 then
+		breakline
 		cocogetqname
-	else if CococrabMenu2Choice.val == 6 then
+		wait 
+		Cococrab_Menu2
+	else if CococrabMenu2Choice.val == 3 then
 		clear
 		print "Set the quest ID"
 		wait 0
 		questID = readline
-		print "Set the quest to 'accepted, finished, invisible, inactive'"
+		print "Set the quest to:"
+		breakline
+		print "1 - Accepted"
+		breakline
+		print "2 - Finished"
+		breakline
+		print "3 - Invisible"
+		breakline
+		print "4 - Inactive"
+		breakline
+		print "0 - Back"
+		breakline
 		wait 0
-		questStatus = readline
-		cocoquest + questID + questStatus
+		questStatus = readkey
+
+		if questStatus.val == 1 then
+			questStatusLabel = "accepted"
+		else if questStatus.val == 2 then
+			questStatusLabel = "finished"
+		else if questStatus.val == 3 then
+			questStatusLabel = "invisible"
+		else if questStatus.val == 4 then
+			questStatusLabel = "inactive"
+		else
+			breakline
+			print "Canceled"
+			wait
+			Cococrab_Menu2
+		end if
+		cocoquest + questID + questStatusLabel
+		wait
+		Cococrab_Menu2
 	else
 		Cococrab_Menu
 	end if
