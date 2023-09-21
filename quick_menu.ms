@@ -1,7 +1,11 @@
 //QUICK MENU
 //By: Plueres
-//Version: 1.1
-//Next update: favorites file
+//Version: 1.2
+stop = function // Stop at current menu
+	while true
+		yield
+	end while
+end function
 Month_Name = function(monthname)
 	if monthname == "01" then
 		return "Jan"
@@ -29,27 +33,79 @@ Month_Name = function(monthname)
 		return "Dec"
 	end if
 end function
+main = function
+	clear
+	print "Quick Menu"
+	breakline
+	print "Select with numbers (1-7)"
+	breakline
+	print "1 - Time Travel"
+	breakline
+	print "2 - Space Travel"
+	breakline
+	print "3 - Return to the Safe House from Time Travel"
+	breakline
+	print "4 - Return to the Safe House from Space Travel"
+	breakline
+	print "5 - PLC Settings"
+	breakline
+	print "6 - HVD Chip Settings"
+	breakline
+	print "    Requires you to have this script installed on a HVD disk"
+	breakline
+	print "7 - Cococrab Mode"
+	breakline
+	mainChoice = readkey
+	if mainChoice.val == 1 then
+		Time_Module
+	else if mainChoice.val == 2 then
+		Space_Module
+	else if mainChoice.val == 3 then
+		recalltimegate
+		wait 3
+		breakline
+		print "Stuck? Press any other to go back"
+		dialGateBack = readkey
+		main
+	else if mainChoice.val == 4 then
+		connectgate
+		wait 2
+		dialgate "xxxxx"
+		wait 3
+		breakline
+		print "Stuck? Press any other to go back"
+		dialGateBack = readkey
+		main
+	else if mainChoice.val == 5 then
+		PLC_Settings
+	else if mainChoice.val == 6 then
+		Create_Chip
+	else if mainChoice.val == 7 then
+		Cococrab_Mode
+	end if
+end function
 Time_Module = function
 	clear
+	print "Connection status: "
+	connectgate
 	wait 1.5 //Wait for connection
 	print "You chose Time Travel"
 	breakline
-	print "Connection status: "
-	connectgate
 	print "Select with numbers (0-2)"
 	breakline
 	print "1 - Random Date and Time"
 	breakline
 	print "2 - Enter Date and Time"
 	breakline
-	print "0 - Back"
+	print "  - Press any other key to go back"
 	Time_Module_Choice = readkey
+
 	if Time_Module_Choice.val == 1 then
-		//Start random time travel calculations
+		//Randomize Time function
 		RandomTime = function(timeNumber, length=2)
 			//Convert number to string
 			timeString = str(timeNumber)
-			//add leading 0s
+			//add leading 0s for every value that should have 2 characters
 			while timeString.len < length
 				timeString = "0" + timeString
 			end while
@@ -58,26 +114,24 @@ Time_Module = function
 		timeAddress = ""
 		//year = round(rnd * (3793 + 2077) - 3793)
 		year = ceil(rnd * 2077)
+		// check if the year is negative
 		if year < 0 then
 			timeAddress = "-"
 			year = year * -1
 		end if
-		year = RandomTime(year, 4)
 		// Add month
 		timeAddress = timeAddress + RandomTime(ceil(rnd * 12))
 		// Add day
 		timeAddress = timeAddress + RandomTime(ceil(rnd * 30))
 		// Add year
-		timeAddress = timeAddress + year
+		timeAddress = timeAddress + RandomTime(year, 4)
 		// Add hour
 		timeAddress = timeAddress + RandomTime(floor(rnd * 24))
 		// Add minute
 		timeAddress = timeAddress + RandomTime(floor(rnd * 60))
 		breakline
-		dialgate timeAddress //Month Day Year Hour Minute
-		while true
-			yield
-		end while
+		dialgate timeAddress //start dialing the address
+		stop
 	else if Time_Module_Choice.val == 2 then
 		wrong = function 
 			wait
@@ -100,7 +154,7 @@ Time_Module = function
 				clear
 				print "Day: " + Day
 				breakline
-				print "Month: " + Month
+				print "Month: " + Month_Name(Month)
 				breakline
 				print "Enter Year as Number (YYYY)"
 				wait 0
@@ -109,7 +163,7 @@ Time_Module = function
 					clear
 					print "Day: " + Day
 					breakline
-					print "Month: " + Month
+					print "Month: " + Month_Name(Month)
 					breakline
 					print "Year: " + Year
 					breakline
@@ -159,33 +213,27 @@ Time_Module = function
 		print "Year: " + Year
 		breakline
 		print "Time: " + Hour + ":" + Minute
-		while true
-			yield
-		end while
+		stop
 	else
 		main
-	breakline
-	while true
-		yield
-	end while
 end function
 Space_Module = function
 	clear
+	print "Connection status: "
+	connectgate
 	wait 1.5 //Wait for connection
 	print "You chose Space Travel"
 	breakline
-	print "Connection status: "
-	connectgate
 	print "Select with numbers (0-2)"
 	breakline
 	print "1 - Random Dialgate Code"
 	breakline
 	print "2 - Enter Dialgate Code"
 	breakline
-	print "0 - Back"
+	print "  - Press any other key to go back"
 	Space_Module_Choice = readkey
 	if Space_Module_Choice.val == 1 then
-		  // Generate random space gate address
+		// Generate random space gate address
   		Space_Coordinate = ""
   		for i in range(1, 5)
     		Space_Coordinate = Space_Coordinate + char(rnd * 24 + 97)
@@ -193,14 +241,13 @@ Space_Module = function
 		breakline
 		dialgate Space_Coordinate
 	else if Space_Module_Choice.val == 2 then
-		//Space Module
 		breakline
 		print "Connection status: Connected"
 		breakline
 		print "Please enter Coordinates using 5 characters (A-X)"
 		wait 0
 		Space_Coordinate = readline
-		if Space_Coordinate.len != 5 then
+		if Space_Coordinate.len != 5 then // if it is not exactly 5 characters then exit
 			print "Please enter the correct format"
 			wait
 			Space_Module
@@ -210,27 +257,26 @@ Space_Module = function
 	else
 		main
 	end if
-	while true
-		yield
-	end while
+	stop
 end function
 PLC_Settings = function 
 	clear
+	print "PLC settings"
+	breakline
 	print "1 - Timegraph"
 	breakline
 	print "2 - Check if you can travel to a certain year (currently not working properly)"
 	breakline
 	print "3 - Car Diagnostics"
 	breakline
+	print "  - Press any other key to go back"
 	breakline
 	checkTimeChoice = readkey
 	if checkTimeChoice.val == 1 then
 		bgcolor 0,0,0
 		timegraph
-		while true
-			clear
-			yield
-		end while
+		clear
+		stop
 	else if checkTimeChoice.val == 2 then
 		print "Enter a year"
 		checkTimeYearChoice = readline
@@ -245,8 +291,10 @@ PLC_Settings = function
 		end if
 	else if checkTimeChoice.val == 3 then
 		cardiag
-		wait
+		wait 3
 		Check_Time
+	else
+		main
 	end if
 end function
 Create_Chip = function
@@ -254,16 +302,15 @@ Create_Chip = function
 	print "Make sure you have this script running on a .eee file on the disk and not a file on the PLC!"
 	breakline
 	print "Select with numbers (0-2)"
-	break
+	breakline
 	breakline
 	print "1 - Overridedate"
 	breakline
 	print "2 - Set chip label"
 	breakline
-	print "0 - Back"
+	print "  - Press any other key to go back"
 	wait 0
 	Create_Chip_Choice = readkey
-
 	if Create_Chip_Choice.val == 1 then 
 		clear
 		print "This command will create a file called startup.eee if it doesn't already exist"
@@ -281,6 +328,7 @@ Create_Chip = function
 		wait 0
 		chipName_Conf = readkey
 		if chipName_Conf.lower == "yes" or chipName_Conf.lower == "y" then
+			breakline
 			print "Setting chip name to " + chipName + "..."
 			wait
 			breakline
@@ -330,7 +378,7 @@ Overridedate_Command = function
 			clear
 			print "Day: " + Day
 			breakline
-			print "Month: " + Month
+			print "Month: " + Month_Name(Month)
 			breakline
 			print "Enter Year as Number (YYYY)"
 			wait 0
@@ -339,7 +387,7 @@ Overridedate_Command = function
 				clear
 				print "Day: " + Day
 				breakline
-				print "Month: " + Month
+				print "Month: " + Month_Name(Month)
 				breakline
 				print "Year: " + Year
 				breakline
@@ -493,7 +541,7 @@ Cococrab_Menu = function
 	breakline
 	print "9 - Next Page"
 	breakline
-	print "0 - Back"
+	print "  - Press any other key to go back"
 	CococrabMenuChoice = readkey
 
 	if CococrabMenuChoice.val == 1 then
@@ -534,7 +582,7 @@ Cococrab_Menu2 = function
 	breakline
 	print "3 - Set current quest progress (Not currently supported)"
 	breakline
-	print "0 - Back"
+	print "  - Press any other key to go back"
 	wait 0
 	CococrabMenu2Choice = readkey
 
@@ -554,7 +602,7 @@ Cococrab_Menu2 = function
 		breakline
 		print "6 - Own input"
 		breakline
-		print "0 - Back"
+		print "  - Press any other key to go back"
 		wait 0
 		changeTimeSpeedChoice = readkey
 		breakline
@@ -613,7 +661,7 @@ Cococrab_Menu2 = function
 		breakline
 		print "4 - Inactive"
 		breakline
-		print "0 - Back"
+		print "  - Press any other key to go back"
 		breakline
 		wait 0
 		questStatus = readkey
@@ -645,7 +693,7 @@ Spawn_Items = function
 	breakline
 	print "2 - Cocogive. Give yourself an item by its ID"
 	breakline
-	print "0 - Back"
+	print "  - Press any other key to go back"
 	wait 0
 	spawnItemsChoice = readkey
 
@@ -681,7 +729,7 @@ Get_Money = function
 	breakline
 	print "4 - All"
 	breakline
-	print "0 - Back"
+	print "  - Press any other key to go back"
 	wait 0
 	moneyKindChoice = readkey
 	
@@ -743,7 +791,7 @@ Teleport = function
   	breakline
   	print "9 - Next Page"
 	breakline
-	print "0 - Back"
+	print "  - Press any other key to go back"
   	breakline
   	wait 0
   	teleportChoice = readkey
@@ -832,7 +880,7 @@ Change_Time = function
 	breakline
 	print "9 - Late Night/Early Morning - 03:00 AM"
 	breakline
-	print "0 - Back"
+	print "  - Press any other key to go back"
 	breakline
 	wait 0
 	changeTimeChoice = readkey
@@ -897,7 +945,7 @@ Player_Settings = function
 	breakline
 	print "4 - Set current location (Not currently supported)"
 	breakline
-	print "0 - Back"
+	print "  - Press any other key to go back"
 	wait 0
 	playerSettingsChoice = readkey
 	if playerSettingsChoice.val == 1 then
@@ -913,7 +961,7 @@ Player_Settings = function
 		wait 2
 		Player_Settings
 	else if playerSettingsChoice.val == 3 then
-		print "0 - Back"
+		print "  - Press any other key to go back"
 		breakline
 		print "Current location is: "
 		cocotransport
@@ -957,7 +1005,7 @@ Car_Settings = function
 	breakline
 	print "3 - Set current car location (Not currently supported)"
 	breakline
-	print "0 - Back"
+	print "  - Press any other key to go back"
 	wait 0
 	carSettingsChoice = readkey
 
@@ -971,47 +1019,5 @@ Car_Settings = function
 		Cococrab_Menu
 	end if
 end function
-main = function
-	clear
-	print "Quick Menu"
-	breakline
-	print "Select with numbers (1-7)"
-	breakline
-	print "1 - Time Travel"
-	breakline
-	print "2 - Space Travel"
-	breakline
-	print "3 - Return to the Safe House from Time Travel"
-	breakline
-	print "4 - Return to the Safe House from Space Travel"
-	breakline
-	print "5 - PLC Settings"
-	breakline
-	print "6 - HVD Chip Settings"
-	breakline
-	print "    Requires you to have this script installed on a HVD disk"
-	breakline
-	print "7 - Cococrab Mode"
-	breakline
-	mainChoice = readkey
-	if mainChoice.val == 1 then
-		Time_Module
-	else if mainChoice.val == 2 then
-		Space_Module
-	else if mainChoice.val == 3 then
-		wait 0
-		recalltimegate
-		wait 2
-	else if mainChoice.val == 4 then
-		wait 0
-		dialgate "xxxxx"
-		wait 2
-	else if mainChoice.val == 5 then
-		PLC_Settings
-	else if mainChoice.val == 6 then
-		Create_Chip
-	else if mainChoice.val == 7 then
-		Cococrab_Mode
-	end if
-end function
+// Start with the main menu
 main
