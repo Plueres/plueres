@@ -1,8 +1,8 @@
 # v1.2
-Added: more back menu's
-Changed: added dialogue to show that you can use any key instead of just 0
-Fixed: returning from space travel wasn't working
-Fixed: When editing the hvd chip label successfully, the confirmation dialog wasn't on the next line
+- Added: more back menu's
+- Changed: added dialogue to show that you can use any key instead of just 0
+- Fixed: returning from space travel wasn't working
+- Fixed: When editing the hvd chip label successfully, the confirmation dialog wasn't on the next line
 
 Planned features: Add a favorites file
 # v1.1
