@@ -2,6 +2,7 @@
 - Added: more back menu's
 - Changed: added dialogue to show that you can use any key instead of just 0
 - Fixed: returning from space travel wasn't working
+- Fixed: Month name not showing after entering the month if you chose time travel or overridedate in hvd settings
 - Fixed: When editing the hvd chip label successfully, the confirmation dialog wasn't on the next line
 
 Planned features: Add a favorites file
