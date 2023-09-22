@@ -5,7 +5,7 @@
 - Fixed: Month name not showing after entering the month if you chose time travel or overridedate in hvd settings
 - Fixed: When editing the hvd chip label successfully, the confirmation dialog wasn't on the next line
 
-Planned features: Add a favorites file
+Planned features: Add a favorites file/A file/function to see important dates
 # v1.1
 - Added the quest menu options in the second page of the cococrab menu
 - Added the time speed menu in the second page of the cococrab menu
