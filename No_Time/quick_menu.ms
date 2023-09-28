@@ -1,6 +1,6 @@
 //QUICK MENU
 //By: Plueres
-//Version: 1.3
+//Version: 1.3.1
 stop = function // Stop at current menu
 	while true
 		yield
@@ -36,6 +36,7 @@ end function
 Travel_History = function
 	//Create History File
 	if find ("Travel History") == -1 then
+		breakline
 		print "'Travel History' "
 		create "Travel History"
 		writeline "Travel History", 0, "Travel History:"
