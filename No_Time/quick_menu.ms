@@ -1,6 +1,6 @@
 //QUICK MENU
 //By: Plueres
-//Version: 1.2
+//Version: 1.3
 stop = function // Stop at current menu
 	while true
 		yield
@@ -31,6 +31,14 @@ Month_Name = function(monthname)
 		return "Nov"
 	else if monthname == "12" then
 		return "Dec"
+	end if
+end function
+Travel_History = function
+	//Create History File
+	if find ("Travel History") == -1 then
+		print "'Travel History' "
+		create "Travel History"
+		writeline "Travel History", 0, "Travel History:"
 	end if
 end function
 main = function
@@ -120,17 +128,20 @@ Time_Module = function
 			year = year * -1
 		end if
 		// Add month
-		timeAddress = timeAddress + RandomTime(ceil(rnd * 12))
+		Month = RandomTime(ceil(rnd * 12))
 		// Add day
-		timeAddress = timeAddress + RandomTime(ceil(rnd * 30))
+		Day = RandomTime(ceil(rnd * 30))
 		// Add year
-		timeAddress = timeAddress + RandomTime(year, 4)
+		Year = RandomTime(year, 4)
 		// Add hour
-		timeAddress = timeAddress + RandomTime(floor(rnd * 24))
+		Hour = RandomTime(floor(rnd * 24))
 		// Add minute
-		timeAddress = timeAddress + RandomTime(floor(rnd * 60))
+		Minute = RandomTime(floor(rnd * 60))
 		breakline
-		dialgate timeAddress //start dialing the address
+		Overridedate_Value = Month + Day + Year + Hour + Minute;
+		dialgate Overridedate_Value //start dialing the address
+		Travel_History()
+		writeline "Travel History", countlines("Travel History")+1, "Random Date: " + Day + " " + Month_Name(Month) + " " + Year + " " + Hour + ":" + Minute
 		stop
 	else if Time_Module_Choice.val == 2 then
 		wrong = function 
@@ -202,7 +213,8 @@ Time_Module = function
 			wrong
 		end if
 		clear
-		dialgate Month + Day + Year + Hour + Minute
+		Overridedate_Value = Month + Day + Year + Hour + Minute
+		dialgate Overridedate_Value
 		breakline
 		print "You Entered:"
 		breakline
@@ -213,6 +225,8 @@ Time_Module = function
 		print "Year: " + Year
 		breakline
 		print "Time: " + Hour + ":" + Minute
+		Travel_History()
+		writeline "Travel History", countlines("Travel History")+1, "Date: " + Day + " " + Month_Name(Month) + " " + Year + " " + Hour + ":" + Minute
 		stop
 	else
 		main
@@ -239,7 +253,9 @@ Space_Module = function
     		Space_Coordinate = Space_Coordinate + char(rnd * 24 + 97)
   		end for
 		breakline
-		dialgate Space_Coordinate
+		dialgate Space_Coordinate.upper
+		Travel_History()
+		writeline "Travel History", countlines("Travel History")+1, "Random Planet Code: " + Space_Coordinate.upper
 	else if Space_Module_Choice.val == 2 then
 		breakline
 		print "Connection status: Connected"
@@ -253,7 +269,9 @@ Space_Module = function
 			Space_Module
 		end if
 		breakline
-		dialgate Space_Coordinate
+		dialgate Space_Coordinate.upper
+		Travel_History()
+		writeline "Travel History", countlines("Travel History")+1, "Planet Code: " + Space_Coordinate.upper
 	else
 		main
 	end if
