@@ -1,6 +1,6 @@
 
 # v1.3.1
-- fixed the "Travel History File Create!" line not being on a new line
+- fixed the "Travel History File Created!" line not being on a new line
 # v1.3
 - Added the creation of a "Travel History" file if it doesn't exist yet
 - Every time you travel with a space code, date, random space code or random date the address will be saved to the Travel History file with it's context attached
