@@ -1,3 +1,7 @@
+# v1.3
+- Added the creation of a "Travel History" file if it doesn't exist yet
+- Every time you travel with a space code, date, random space code or random date the address will be saved to the Travel History file with it's context attached
+  (ex. 'Random Planet Code: JIRUO' or 'Date: 30 Jan 2004 13:34)
 # v1.2
 - Added: more back menu's
 - Changed: added dialogue to show that you can use any key instead of just 0
