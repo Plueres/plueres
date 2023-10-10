@@ -1,3 +1,16 @@
+# 1.4
+- Added more back menu's
+- Added an automatic option to the HVD menu that only needs a year to work and automatically renames the chip to the entered year
+- Added the functionality to not need to enter the full 2 or 4 digits of the number when entering a date
+- Added the functionality to enter a Space planet code with less than 5 digits and it will automatically fill in the blank spots
+- Added more information when selecting random date and time. You'll now see the same information like the day, month, and year
+- Changed the HVD menu from not needing to be on the hvd script but now you can just use the script on the plc itself
+- Changed the first menu after selecting the enter date and time menu to now go straight to day and you'll now have to enter a "-" as the first digit when entering the year
+- removed the stop function
+
+# 1.3
+- fixed a bug where the space planet code was always uppercase, it's now always lowercase
+
 # v1.2
 - Added: more back menu's
 - Changed: added dialogue to show that you can use any key instead of just 0

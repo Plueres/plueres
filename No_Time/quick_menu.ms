@@ -1,11 +1,6 @@
 //QUICK MENU
 //By: Plueres
-//Version: 1.2
-stop = function // Stop at current menu
-	while true
-		yield
-	end while
-end function
+//Version: 1.4
 Month_Name = function(monthname)
 	if monthname == "01" then
 		return "Jan"
@@ -33,6 +28,15 @@ Month_Name = function(monthname)
 		return "Dec"
 	end if
 end function
+Travel_History = function
+	//Create History File
+	if find ("Travel History") == -1 then
+		breakline
+		print "'Travel History' "
+		create "Travel History"
+		writeline "Travel History", 0, "Travel History:"
+	end if
+end function
 main = function
 	clear
 	print "Quick Menu"
@@ -51,7 +55,7 @@ main = function
 	breakline
 	print "6 - HVD Chip Settings"
 	breakline
-	print "    Requires you to have this script installed on a HVD disk"
+	print "    (Only works with an HVD inserted into the PLC)"
 	breakline
 	print "7 - Cococrab Mode"
 	breakline
@@ -64,16 +68,18 @@ main = function
 		recalltimegate
 		wait 3
 		breakline
-		print "Stuck? Press any other to go back"
+		print "Press any button to go back"
 		dialGateBack = readkey
 		main
 	else if mainChoice.val == 4 then
 		connectgate
+		breakline
+		print "Please wait until it starts dialing"
 		wait 2
 		dialgate "xxxxx"
 		wait 3
 		breakline
-		print "Stuck? Press any other to go back"
+		print "Press any button to go back"
 		dialGateBack = readkey
 		main
 	else if mainChoice.val == 5 then
@@ -111,109 +117,154 @@ Time_Module = function
 			end while
 			return timeString
 		end function
-		timeAddress = ""
-		//year = round(rnd * (3793 + 2077) - 3793)
-		year = ceil(rnd * 2077)
-		// check if the year is negative
-		if year < 0 then
-			timeAddress = "-"
-			year = year * -1
-		end if
+		wait
 		// Add month
-		timeAddress = timeAddress + RandomTime(ceil(rnd * 12))
+		month = RandomTime(ceil(rnd * 12))
 		// Add day
-		timeAddress = timeAddress + RandomTime(ceil(rnd * 30))
-		// Add year
-		timeAddress = timeAddress + RandomTime(year, 4)
+		day = RandomTime(ceil(rnd * 30))
 		// Add hour
-		timeAddress = timeAddress + RandomTime(floor(rnd * 24))
+		hour = RandomTime(floor(rnd * 24))
 		// Add minute
-		timeAddress = timeAddress + RandomTime(floor(rnd * 60))
-		breakline
-		dialgate timeAddress //start dialing the address
-		stop
-	else if Time_Module_Choice.val == 2 then
-		wrong = function 
-			wait
-			Time_Module
-		end function
+		minute = RandomTime(floor(rnd * 60))
+		// check if the year is negative
+		year = floor((0-3795) + (2077 - (0-3795)) * rnd)
+		year = str(year)
+		if year[0] == "-" then
+			epoch = ""
+			// Could be a '-' if negative years worked with the dimension gate
+			year = slice(year, 1)
+		else
+			epoch = ""
+		end if
+		while year.len < 4
+			year = "0" + year
+		end while
 		clear
-		print "Connection status: Connected"
+		print "Random address:"
 		breakline
-		print "Enter Day as Number (DD)"
+		print "Day: " + day
+		breakline
+		print "Month: " + Month_Name(month)
+		breakline
+		print "Year: " + epoch + year
+		breakline
+		print "Date: " + day + " " + Month_Name(month) + " " + epoch + year
+		breakline
+		print "Time: " + hour + ":" + minute
+		breakline
+		Overridedate_Value = epoch + month + day + year + hour + minute;
+		dialgate Overridedate_Value //start dialing the address
+		Travel_History()
+		writeline "Travel History", countlines("Travel History")+1, "Random Date: " + day + " " + Month_Name(month) + " " + epoch + year + " " + hour + ":" + minute
+		breakline
+		wait 3
+		print "Press any button to go back"
+		backKey = readkey
+		Time_Module
+	else if Time_Module_Choice.val == 2 then
+		clear
+		print "Enter Day:"
+		day = readline
+		while day.len < 2
+			day = "0" + day
+		end while
 		wait 0
-		Day = readline
-		if Day.len == 2 and Day.val <= 31 then
+		if day.val <= 31 then
 			clear
-			print "Day: " + Day
+			print "Day: " + day
 			breakline
-			print "Enter Month as Number (MM)"
+			print "Enter Month:"
+			month = readline
+			while month.len < 2
+				month = "0" + month
+			end while
 			wait 0
-			Month = readline
-			if Month.len == 2 and Month.val <= 12 then
+			if month.val <= 12 then
 				clear
-				print "Day: " + Day
+				print "Day: " + day
 				breakline
-				print "Month: " + Month_Name(Month)
+				print "Month: " + Month_Name(month)
 				breakline
-				print "Enter Year as Number (YYYY)"
+				print "Enter Year:"
+				year = readline
+				// Check for leading '-'
+				if year[0] == "-" then
+					epoch = "-"
+					year = slice(year, 1)
+				else
+					epoch = ""
+				end if
+				while year.len < 4
+					year = "0" + year
+				end while
 				wait 0
-				Year = readline
-				if Year.len == 4 and Year.val <= 2076 then
+				if year.val <= 2076 then
 					clear
-					print "Day: " + Day
+					print "Day: " + day
 					breakline
-					print "Month: " + Month_Name(Month)
+					print "Month: " + Month_Name(month)
 					breakline
-					print "Year: " + Year
+					print "Year: " + year
 					breakline
 					print "Enter Hour as Number (HH)"
+					hour = readline
+					while hour.len < 2
+						hour = "0" + hour
+					end while
 					wait 0
-					Hour = readline
-					if Hour.len == 2 and Hour.val <= 24 then
+					if hour.val <= 24 then
 						clear
-						print "Date: " + Day + "/" + Month + "/" + Year + " (DD/MM/YYYY)"
+						print "Day: " + day
 						breakline
-						print "Hour: " + Hour
+						print "Month: " + Month_Name(month)
+						breakline
+						print "Year: " + year
+						breakline
+						print "Hour: " + hour
 						breakline
 						print "Enter Minute as Number (MM)"
-						wait 0
-						Minute = readline
-						if Minute.len == 2 and Minute.val <= 59 then
-							yield
-						else
-							print "This is not a valid minute"
-							wrong
+						minute = readline
+						while minute.len < 2
+							minute = "0" + minute
+						end while
+						if minute.val > 59 then
+							minute = 59
 						end if
+						wait 0
 					else
-						print "This is not a valid hour"
-						wrong
+						hour = "23"
 					end if
-				else
-					print "This is not a valid year"
-					wrong
 				end if
-			else
-				print "This is not a valid month"
-				wrong
+			else 
+				month = "05"
 			end if
 		else
-			print "This is not a valid day"
-			wrong
+			day = "11"
 		end if
 		clear
-		dialgate Month + Day + Year + Hour + Minute
-		breakline
+		Overridedate_Value = epoch + month + day + year + hour + minute
+		dialgate Overridedate_Value
 		print "You Entered:"
 		breakline
-		print "Day: " + Day
+		print "Day: " + day
 		breakline
-		print "Month: " + Month_Name(Month)
+		print "Month: " + Month_Name(month)
 		breakline
-		print "Year: " + Year
+		print "Year: " + epoch + year
 		breakline
-		print "Time: " + Hour + ":" + Minute
-		stop
+		print "Date: " + day + " " + Month_Name(month) + " " + epoch + year
+		breakline
+		print "Time: " + hour + ":" + minute
+		breakline
+		print Overridedate_Value
+		breakline
+		Travel_History()
+		writeline "Travel History", countlines("Travel History")+1, "Date: " + day + " " + Month_Name(month) + " " + year + " " + hour + ":" + minute
+		breakline
+		wait 3
+		print "Press any button to go back"
+		backKey = readkey
+		Time_Module
 	else
 		main
 end function
@@ -239,25 +290,33 @@ Space_Module = function
     		Space_Coordinate = Space_Coordinate + char(rnd * 24 + 97)
   		end for
 		breakline
-		dialgate Space_Coordinate
+		dialgate Space_Coordinate.lower
+		Travel_History()
+		writeline "Travel History", countlines("Travel History")+1, "Random Planet Code: " + Space_Coordinate.upper
 	else if Space_Module_Choice.val == 2 then
-		breakline
-		print "Connection status: Connected"
-		breakline
+		clear
 		print "Please enter Coordinates using 5 characters (A-X)"
 		wait 0
 		Space_Coordinate = readline
-		if Space_Coordinate.len != 5 then // if it is not exactly 5 characters then exit
+		while Space_Coordinate.len < 5
+			Space_Coordinate = char(rnd * 24 + 97) + Space_Coordinate
+		end while
+		if Space_Coordinate.len < 5 then // if it is not exactly 5 characters then exit
 			print "Please enter the correct format"
 			wait
 			Space_Module
 		end if
-		breakline
-		dialgate Space_Coordinate
+		dialgate Space_Coordinate.lower
+		Travel_History()
+		writeline "Travel History", countlines("Travel History")+1, "Planet Code: " + Space_Coordinate.upper
 	else
 		main
 	end if
-	stop
+	breakline
+	wait 3
+	print "Press any button to go back"
+	backKey = readkey
+	Space_Module
 end function
 PLC_Settings = function 
 	clear
@@ -276,37 +335,41 @@ PLC_Settings = function
 		bgcolor 0,0,0
 		timegraph
 		clear
-		stop
+		while true
+			yield
+		end while
 	else if checkTimeChoice.val == 2 then
+		PLC_Settings
 		print "Enter a year"
 		checkTimeYearChoice = readline
-		if cantravel(checkTimeYearChoice) == 1 then
-			print "Yes"
-			wait
-			Check_Time
+		if cantravel(checkTimeYearChoice.val) == 1 then
+			print cantravel(checkTimeYearChoice.val)
+			wait 2
+			PLC_Settings
 		else
-			print "No"
-			wait
-			Check_Time
+			print cantravel(checkTimeYearChoice.val)
+			wait 2
+			PLC_Settings
 		end if
 	else if checkTimeChoice.val == 3 then
 		cardiag
 		wait 3
-		Check_Time
+		PLC_Settings
 	else
 		main
 	end if
 end function
 Create_Chip = function
 	clear
-	print "Make sure you have this script running on a .eee file on the disk and not a file on the PLC!"
-	breakline
+	cd "Item_HoloDisk(Clone)"
 	print "Select with numbers (0-2)"
 	breakline
 	breakline
 	print "1 - Overridedate"
 	breakline
-	print "2 - Set chip label"
+	print "2 - Overridedate (Automatic)"
+	breakline
+	print "3 - Set chip label"
 	breakline
 	print "  - Press any other key to go back"
 	wait 0
@@ -315,9 +378,15 @@ Create_Chip = function
 		clear
 		print "This command will create a file called startup.eee if it doesn't already exist"
 		breakline
-		wait 3
+		wait 1.5
 		Overridedate_Command
 	else if Create_Chip_Choice.val == 2 then
+		clear
+		print "This command will make it easier to make timechips. You'll only have to enter the year"
+		breakline
+		wait 1.5
+		Overridedate_Command_Year
+	else if Create_Chip_Choice.val == 3 then
 		clear
 		print "Enter a name for the HVD chip"
 		breakline
@@ -334,6 +403,7 @@ Create_Chip = function
 			breakline
 			setlabel str(chipName)
 			wait 2
+			cd "FPSController"
 			main
 		else
 			breakline
@@ -342,159 +412,217 @@ Create_Chip = function
 			Create_Chip
 		end if
 	else 
-	main
+		cd "FPSController"
+		main
 	end if
 end function
 Overridedate_Command = function
 	clear
-	print "Do you want to go to the BC times? (Times before the year 0)"
-	breakline
-	print "You will be able to enter the year later."
-	breakline
-	print "(Y)es or (N)o"
+	print "Enter Day:"
+	day = readline
+	while len(day) < 2
+		day = "0" + day
+	end while
 	wait 0
-	negativeChoice = readkey
-	if negativeChoice == "y" then
-		Negative = "-"
-	else
-		Negative = ""
-	end if
-	wrong = function 
-		wait
-		Overridedate_Command
-	end function
-	clear
-	print "Enter Day as Number (DD)"
-	wait 0
-	Day = readline
-	if Day.len == 2 and Day.val <= 31 then
+	if day.val <= 31 then
 		clear
-		print "Day: " + Day
+		print "Day: " + day
 		breakline
-		print "Enter Month as Number (MM)"
+		print "Enter Month:"
+		month = readline
+		while len(month) < 2
+			month = "0" + month
+		end while
 		wait 0
-		Month = readline
-		if Month.len == 2 and Month.val <= 12 then
+		if month.val <= 12 then
 			clear
-			print "Day: " + Day
+			print "Day: " + day
 			breakline
-			print "Month: " + Month_Name(Month)
+			print "Month: " + Month_Name(month)
 			breakline
-			print "Enter Year as Number (YYYY)"
+			print "Enter Year:"
+			year = readline
+			// Check for leading '-'
+			if year[0] == "-" then
+				epoch = "-"
+				year = slice(year, 1)
+			else
+				epoch = ""
+			end if
+			while len(year) < 4
+				year = "0" + year
+			end while
 			wait 0
-			Year = readline
-			if Year.len == 4 and Year.val <= 2076 then
+			if year.val <= 2076 then
 				clear
-				print "Day: " + Day
+				print "Day: " + day
 				breakline
-				print "Month: " + Month_Name(Month)
+				print "Month: " + Month_Name(month)
 				breakline
-				print "Year: " + Year
+				print "Year: " + year
 				breakline
 				print "Enter Hour as Number (HH)"
+				hour = readline
+				while len(hour) < 2
+					hour = "0" + hour
+				end while
 				wait 0
-				Hour = readline
-				if Hour.len == 2 and Hour.val <= 24 then
+				if hour.val <= 24 then
 					clear
-					print "Date: " + Day + "/" + Month + "/" + Year + " (DD/MM/YYYY)"
+					print "Day: " + day
 					breakline
-					print "Hour: " + Hour
+					print "Month: " + Month_Name(month)
+					breakline
+					print "Year: " + year
+					breakline
+					print "Hour: " + hour
 					breakline
 					print "Enter Minute as Number (MM)"
-					wait 0
-					Minute = readline
-					if Minute.len == 2 and Minute.val <= 59 then
-						yield
-					else
-						print "This is not a valid minute"
-						wrong
+					minute = readline
+					while len(minute) < 2
+						minute = "0" + minute
+					end while
+					if minute.val <= 59 then
 					end if
-				else
-					print "This is not a valid hour"
-					wrong
+					wait 0
 				end if
-			else
-				print "This is not a valid year"
-				wrong
 			end if
-		else
-			print "This is not a valid month"
-			wrong
 		end if
-	else
-		print "This is not a valid day"
-		wrong
 	end if
 	clear
-	breakline
 	print "You Entered:"
 	breakline
-	print "Day: " + Day
+	print "Day: " + day
 	breakline
-	print "Month: " + Month_Name(Month)
+	print "Month: " + Month_Name(month)
 	breakline
-	print "Year: " + Negative + Year
+	print "Year: " + epoch + year
 	breakline
-	print "Time: " + Hour + ":" + Minute
-	Overridedate_Value = Day + Month + Negative + Year + Hour + Minute
+	print "Date: " + day + " " + Month_Name(month) + " " + epoch + year
+	breakline
+	print "Time: " + hour + ":" + minute
+	Overridedate_Value = epoch + month + day + year + hour + minute
 	breakline
 	print Overridedate_Value
 	breakline
 	if find ("startup.eee") != -1 then
 		lines = countlines ("startup.eee")
 	end if
-	breakline
-	Overridedate_Pos_Value = Day + Month + Year + Hour + Minute
+	Overridedate_Pos_Value = day + month + year + hour + minute
 	if Overridedate_Pos_Value.len == 12 then
-		print "Checking if file exists and if it is empty"
+		Check_Starup_File(lines, Overridedate_Value)
+	else
+		print "ERROR: Invalid input. Aborting"
+		cd "FPSController"
+	end if
+	breakline
+	cd "FPSController"
+	wait 3
+	print "Press any button to go back"
+	backKey = readkey
+	Create_Chip
+end function
+Overridedate_Command_Year = function
+	clear
+	print "Enter Year: (Can be negative)"
+	year = readline
+	// Check for leading '-'
+	if year[0] == "-" then
+		epoch = "-"
+		year = slice(year, 1)
+	else
+		epoch = ""
+	end if
+	while len(year) < 4
+		year = "0" + year
+	end while
+	Overridedate_Value = epoch + "06" + "16" + year + "10" + "10"
+	breakline
+	print Overridedate_Value
+	breakline
+	if find ("startup.eee") != -1 then
+		lines = countlines ("startup.eee")
+	else 
+		lines = 0
+	end if
+	setlabel epoch + year + "chip"
+	Check_Starup_File(lines, Overridedate_Value)
+	breakline
+	cd "FPSController"
+	wait 3
+	print "Press any button to go back"
+	backKey = readkey
+	Create_Chip
+end function
+Check_Starup_File = function(linecount, value)
+	print "Checking if file exists and if it is empty"
+	breakline
+	wait
+	if find ("startup.eee") == -1 then
+		print "File doesn't exist yet, creating file."
+		wait
+		print "."
+		wait
+		print "."
+		breakline
+		create "startup.eee"
+		wait
+		print "Writing lines."
+		wait
+		print "."
+		wait
+		print "."
+		breakline
+		writeline "startup.eee", 0, "overridedate " + value
+		print "Done"
+		wait 0.5
+		breakline
+		cd "FPSController"
+		wait 3
+		print "Press any button to go back"
+		backKey = readkey
+		Create_Chip
+	else if linecount < 1 then
+		print "Nothing in the file yet, writing."
+		wait
+		print "."
+		wait
+		print "."
 		breakline
 		wait
-		if find ("startup.eee") == -1 then
-			print "File doesn't exist yet, creating..."
-			breakline
-			create "startup.eee"
-			wait 
-			print "Writing..."
-			wait 2
-			breakline
-			writeline "startup.eee", 0, "overridedate " + Overridedate_Value
-			print "Done"
-			wait 2
-			main
-		else if lines < 1 then
-			print "Nothing in the file yet, writing..."
-			breakline
-			wait 2
-			writeline "startup.eee", lines, "overridedate " + Overridedate_Value
-			print "Done"
-			wait 2
-			main
-		else
-			print "startup.eee is not empty, overwriting..."
-			breakline
-			wait 2
-			if find ("startup.eee") == -1 then
-				print "startup.eee doesn't exist because of a bug, creating again..."
-				create "startup.eee"
-				breakline
-			else 
-				delete "startup.eee"
-				wait //just for user experience
-				create "startup.eee"
-				wait //just for user experience
-			end if
-			writeline "startup.eee", lines, "overridedate " + Overridedate_Value
-			print "Writing..."
-			wait
-			breakline
-			print "Done"
-		end if
+		writeline "startup.eee", linecount, "overridedate " + value
+		print "Done"
+		breakline
+		wait 0.5
+		cd "FPSController"
+		wait 3
+		print "Press any button to go back"
+		backKey = readkey
+		Create_Chip
 	else
-	print "ERROR: Invalid input. Aborting..."
+		print "startup.eee has existing lines, overwriting."
+		wait
+		print "."
+		wait
+		print "."
+		breakline
+		wait
+		print "Writing into file."
+		wait 0.5
+		print "."
+		wait 0.5
+		print "."
+		breakline
+		writeline "startup.eee", linecount, "overridedate " + value
+		print "Done"
+		wait 0.5
+		breakline
+		cd "FPSController"
+		wait 3
+		print "Press any button to go back"
+		backKey = readkey
+		Create_Chip
 	end if
-	while true
-		yield
-	end while
 end function
 Cococrab_Mode = function
 	print "Do you want to enable Cococrab Mode? (Cheats)"
