@@ -1,12 +1,14 @@
 // QUICK MENU
 // By: Thers
-// Version: 1.4.1
+// Version: 1.4.2
+
+// variables
+connectionTime = 2
 
 // Convert month number to month shortname
 Month_Name = function(monthnumber)
-    months = {0:"", 01:"Jan", 02:"Feb", 03:"Mar", 04:"Apr", 05:"May", 06:"Jun", 07:"Jul", 08:"Aug", 09:"Sep", 10:"Oct", 11:"Nov", 12:"Dec"}
-
-    for i in range(months.indexes, 12)
+    months = {01:"Jan", 02:"Feb", 03:"Mar", 04:"Apr", 05:"May", 06:"Jun", 07:"Jul", 08:"Aug", 09:"Sep", 10:"Oct", 11:"Nov", 12:"Dec"}
+    for i in months.indexes
 		if str(i).len <= 1 then
             i + "0" + monthnumber
         end if
@@ -49,86 +51,136 @@ main = function
 	breakline
 	print "3 - Return from Time Travel    4 - Return from Space Travel"
 	breakline
-	print "5 - PLC Settings               6 - Create HVD Chip"
+	print "5 - Cococrab Mode              6 - Create HVD Chip"
 	breakline
-	print "7 - Cococrab Mode			      (Needs HVD Chip in the PLC)"
+	print "7 - Other Functions                (Needs HVD Chip in the PLC)"
+	breakline
+	eof()
 	breakline
 	mainChoice = readkey
 	if mainChoice.val == 1 then
-		Time_Module
+		TimeModule
 	else if mainChoice.val == 2 then
-		Space_Module
+		SpaceModule
 	else if mainChoice.val == 3 then
-		recalltimegate
-		wait 3
-		breakline
-		print "Press any button to go back"
-		dialGateBack = readkey
-		main
+		RecallTimeGate
 	else if mainChoice.val == 4 then
-		connectgate
-		breakline
-		print "Please wait until it starts dialing"
-		wait 2
-		dialgate "xxxxx"
-		wait 3
-		breakline
-		print "Press any button to go back"
-		dialGateBack = readkey
-		main
+		RecallSpaceGate
 	else if mainChoice.val == 5 then
-		PLC_Settings
+		CococrabMode
 	else if mainChoice.val == 6 then
-		Create_Chip
+		CreateChip
 	else if mainChoice.val == 7 then
-		Cococrab_Mode
+		OtherFunctions
 	end if
 end function
 
-// The option to travel through time with the dimensions gate
-Time_Module = function
+// The function to travel through time with the dimension gate
+TimeModule = function
 	clear
-	print "Connection status: "
 	connectgate
-	wait 2
-	connection = true
-	if connection then
-		wait 2 //Wait for connection
-		print "You chose Time Travel"
+	wait connectionTime
+	print "Select with numbers (0-2)"
+	breakline
+	print "1 - Random Date and Time"
+	breakline
+	print "2 - Enter Date and Time"
+	breakline
+	print "    Press any other key to go back"
+	TimeModule_Choice = readkey
+	if TimeModule_Choice.val == 1 then
+		TimeModule_RandomDateTime
+	else if TimeModule_Choice.val == 2 then
+		TimeModule_EnterDateTime
+	else
+		main
+	end if
+end function
+TimeModule_RandomDateTime = function
+	//Randomize Time function
+	RandomTime = function(timeNumber, length=2)
+		//Convert number to string
+		timeString = str(timeNumber)
+		//add leading 0s for every value that should have 2 characters
+		while timeString.len < length
+			timeString = "0" + timeString
+		end while
+		return timeString
+	end function
+	wait
+	// Add month
+	month = RandomTime(ceil(rnd * 12))
+	// Add day
+	day = RandomTime(ceil(rnd * 30))
+	// Add hour
+	hour = RandomTime(floor(rnd * 24))
+	// Add minute
+	minute = RandomTime(floor(rnd * 60))
+	// check if the year is negative
+	year = floor((0-3795) + (2077 - (0-3795)) * rnd)
+	year = str(year)
+	if year[0] == "-" then
+		epoch = ""
+		// Could be a '-' if negative years worked with the dimension gate
+		year = slice(year, 1)
+	else
+		epoch = ""
+	end if
+	while year.len < 4
+		year = "0" + year
+	end while
+	clear
+	print "Random address:"
+	breakline
+	print "Day: " + day
+	breakline
+	print "Month: " + Month_Name(month)
+	breakline
+	print "Year: " + epoch + year
+	breakline
+	print "Date: " + day + " " + Month_Name(month) + " " + epoch + year
+	breakline
+	print "Time: " + hour + ":" + minute
+	breakline
+	Overridedate_Value = epoch + month + day + year + hour + minute;
+	dialgate Overridedate_Value //start dialing the address
+	Travel_History()
+	writeline "Travel History", countlines("Travel History")+1, "Random Date: " + day + " " + Month_Name(month) + " " + epoch + year + " " + hour + ":" + minute
+	breakline
+	wait 3
+	print "Press any button to go back"
+	backKey = readkey
+	TimeModule
+end function
+TimeModule_EnterDateTime = function
+	clear
+	print "Enter Day:"
+	day = readline
+	while day.len < 2
+		day = "0" + day
+	end while
+	wait 0
+	if day.val <= 31 then
+		clear
+		print "Day: " + day
 		breakline
-		print "				Select with numbers (0-2)"
-		breakline
-		print "1 - Random Date and Time          2 - Enter Date and Time"
-		breakline
-		print "              Press any other key to go back"
-		Time_Module_Choice = readkey
-
-		if Time_Module_Choice.val == 1 then
-			//Randomize Time function
-			RandomTime = function(timeNumber, length=2)
-				//Convert number to string
-				timeString = str(timeNumber)
-				//add leading 0s for every value that should have 2 characters
-				while timeString.len < length
-					timeString = "0" + timeString
-				end while
-				return timeString
-			end function
-			wait
-			// Add month
-			month = RandomTime(ceil(rnd * 12))
-			// Add day
-			day = RandomTime(ceil(rnd * 30))
-			// Add hour
-			hour = RandomTime(floor(rnd * 24))
-			// Add minute
-			minute = RandomTime(floor(rnd * 60))
-			// check if the year is negative
-			year = floor((0-3795) + (2077 - (0-3795)) * rnd)
-			year = str(year)
+		print "Enter Month:"
+		month = readline
+		while month.len < 2
+			month = "0" + month
+		end while
+		wait 0
+		if month.val <= 12 then
+			clear
+			print "Day: " + day
+			breakline
+			print "Month: " + Month_Name(month)
+			breakline
+			print "Enter Year:"
+			year = readline
+			// Check for leading '-'
 			if year[0] == "-" then
-				epoch = ""
-				// Could be a '-' if negative years worked with the dimension gate
+				epoch = "-"
 				year = slice(year, 1)
 			else
 				epoch = ""
@@ -136,156 +188,82 @@ Time_Module = function
 			while year.len < 4
 				year = "0" + year
 			end while
-			clear
-			print "Random address:"
-			breakline
-			print "Day: " + day
-			breakline
-			print "Month: " + Month_Name(month)
-			breakline
-			print "Year: " + epoch + year
-			breakline
-			print "Date: " + day + " " + Month_Name(month) + " " + epoch + year
-			breakline
-			print "Time: " + hour + ":" + minute
-			breakline
-			Overridedate_Value = epoch + month + day + year + hour + minute;
-			dialgate Overridedate_Value //start dialing the address
-			Travel_History()
-			writeline "Travel History", countlines("Travel History")+1, "Random Date: " + day + " " + Month_Name(month) + " " + epoch + year + " " + hour + ":" + minute
-			breakline
-			wait 3
-			print "Press any button to go back"
-			backKey = readkey
-			Time_Module
-		else if Time_Module_Choice.val == 2 then
-			clear
-			print "Enter Day:"
-			day = readline
-			while day.len < 2
-				day = "0" + day
-			end while
 			wait 0
-			if day.val <= 31 then
+			if year.val <= 2076 then
 				clear
 				print "Day: " + day
 				breakline
-				print "Enter Month:"
-				month = readline
-				while month.len < 2
-					month = "0" + month
+				print "Month: " + Month_Name(month)
+				breakline
+				print "Year: " + year
+				breakline
+				print "Enter Hour as Number (HH)"
+				hour = readline
+				while hour.len < 2
+					hour = "0" + hour
 				end while
 				wait 0
-				if month.val <= 12 then
+				if hour.val <= 24 then
 					clear
 					print "Day: " + day
 					breakline
 					print "Month: " + Month_Name(month)
 					breakline
-					print "Enter Year:"
-					year = readline
-					// Check for leading '-'
-					if year[0] == "-" then
-						epoch = "-"
-						year = slice(year, 1)
-					else
-						epoch = ""
-					end if
-					while year.len < 4
-						year = "0" + year
+					print "Year: " + year
+					breakline
+					print "Hour: " + hour
+					breakline
+					print "Enter Minute as Number (MM)"
+					minute = readline
+					while minute.len < 2
+						minute = "0" + minute
 					end while
-					wait 0
-					if year.val <= 2076 then
-						clear
-						print "Day: " + day
-						breakline
-						print "Month: " + Month_Name(month)
-						breakline
-						print "Year: " + year
-						breakline
-						print "Enter Hour as Number (HH)"
-						hour = readline
-						while hour.len < 2
-							hour = "0" + hour
-						end while
-						wait 0
-						if hour.val <= 24 then
-							clear
-							print "Day: " + day
-							breakline
-							print "Month: " + Month_Name(month)
-							breakline
-							print "Year: " + year
-							breakline
-							print "Hour: " + hour
-							breakline
-							print "Enter Minute as Number (MM)"
-							minute = readline
-							while minute.len < 2
-								minute = "0" + minute
-							end while
-							if minute.val > 59 then
-								minute = 59
-							end if
-							wait 0
-						else
-							hour = "23"
-						end if
+					if minute.val > 59 then
+						minute = 59
 					end if
-				else 
-					month = "05"
+					wait 0
+				else
+					hour = "23"
 				end if
-			else
-				day = "11"
 			end if
-			clear
-			Overridedate_Value = epoch + month + day + year + hour + minute
-			dialgate Overridedate_Value
-			print "You Entered:"
-			breakline
-			print "Day: " + day
-			breakline
-			print "Month: " + Month_Name(month)
-			breakline
-			print "Year: " + epoch + year
-			breakline
-			print "Date: " + day + " " + Month_Name(month) + " " + epoch + year
-			breakline
-			print "Time: " + hour + ":" + minute
-			breakline
-			print Overridedate_Value
-			breakline
-			Travel_History()
-			writeline "Travel History", countlines("Travel History")+1, "Date: " + day + " " + Month_Name(month) + " " + year + " " + hour + ":" + minute
-			breakline
-			wait 3
-			print "Press any button to go back"
-			backKey = readkey
-			Time_Module
-		else
-			main
+		else 
+			month = "05"
 		end if
 	else
-		breakline
-		print "No Connection!"
-		breakline
-		breakline
-		print "Aborting."
-		wait 0.5
-		print "."
-		wait 0.5
-		print "."
-		wait 1
-		main
+		day = "11"
 	end if
+	clear
+	Overridedate_Value = epoch + month + day + year + hour + minute
+	dialgate Overridedate_Value
+	print "You Entered:"
+	breakline
+	print "Day: " + day
+	breakline
+	print "Month: " + Month_Name(month)
+	breakline
+	print "Year: " + epoch + year
+	breakline
+	print "Date: " + day + " " + Month_Name(month) + " " + epoch + year
+	breakline
+	print "Time: " + hour + ":" + minute
+	breakline
+	print Overridedate_Value
+	breakline
+	Travel_History()
+	writeline "Travel History", countlines("Travel History")+1, "Date: " + day + " " + Month_Name(month) + " " + year + " " + hour + ":" + minute
+	breakline
+	wait 3
+	print "Press any button to go back"
+	backKey = readkey
+	TimeModule
 end function
 
-// The option to travel through space with the dimensions gate
-Space_Module = function
+// The function to travel through space with the dimension gate
+SpaceModule = function
 	clear
 	print "Connection status: "
 	connectgate
-	wait 1.5 //Wait for connection
+	wait connectionTime
 	print "You chose Space Travel"
 	breakline
 	print "Select with numbers (0-2)"
@@ -295,33 +273,11 @@ Space_Module = function
 	print "2 - Enter Dialgate Code"
 	breakline
 	print "  - Press any other key to go back"
-	Space_Module_Choice = readkey
-	if Space_Module_Choice.val == 1 then
-		// Generate random space gate address
-  		Space_Coordinate = ""
-  		for i in range(1, 5)
-    		Space_Coordinate = Space_Coordinate + char(rnd * 24 + 97)
-  		end for
-		breakline
-		dialgate Space_Coordinate.lower
-		Travel_History()
-		writeline "Travel History", countlines("Travel History")+1, "Random Planet Code: " + Space_Coordinate.upper
-	else if Space_Module_Choice.val == 2 then
-		clear
-		print "Please enter Coordinates using 5 characters (A-X)"
-		wait 0
-		Space_Coordinate = readline
-		while Space_Coordinate.len < 5
-			Space_Coordinate = char(rnd * 24 + 97) + Space_Coordinate
-		end while
-		if Space_Coordinate.len < 5 then // if it is not exactly 5 characters then exit
-			print "Please enter the correct format"
-			wait
-			Space_Module
-		end if
-		dialgate Space_Coordinate.lower
-		Travel_History()
-		writeline "Travel History", countlines("Travel History")+1, "Planet Code: " + Space_Coordinate.upper
+	SpaceModule_Choice = readkey
+	if SpaceModule_Choice.val == 1 then
+		RandomDialgateCode
+	else if SpaceModule_Choice.val == 2 then
+		EnterDialgateCode
 	else
 		main
 	end if
@@ -329,12 +285,62 @@ Space_Module = function
 	wait 3
 	print "Press any button to go back"
 	backKey = readkey
-	Space_Module
+	SpaceModule
+end function
+RandomDialgateCode = function
+	// Generate random space gate address
+	Space_Coordinate = ""
+	for i in range(1, 5)
+		Space_Coordinate = Space_Coordinate + char(rnd * 24 + 97)
+	end for
+	breakline
+	dialgate Space_Coordinate.lower
+	Travel_History()
+	writeline "Travel History", countlines("Travel History")+1, "Random Planet Code: " + Space_Coordinate.upper
+end function
+EnterDialgateCode = function
+	clear
+	print "Please enter Coordinates using 5 characters (A-X)"
+	wait 0
+	Space_Coordinate = readline
+	while Space_Coordinate.len < 5
+		Space_Coordinate = char(rnd * 24 + 97) + Space_Coordinate
+	end while
+	if Space_Coordinate.len < 5 then // if it is not exactly 5 characters then exit
+		print "Please enter the correct format"
+		wait
+		SpaceModule
+	end if
+	dialgate Space_Coordinate.lower
+	Travel_History()
+	writeline "Travel History", countlines("Travel History")+1, "Planet Code: " + Space_Coordinate.upper
+end function
+
+RecallTimeGate = function
+	recalltimegate
+	wait 3
+	breakline
+	print "Press any button to go back"
+	dialGateBack = readkey
+	main
+end function 
+
+RecallSpaceGate = function
+	connectgate
+	breakline
+	print "Please wait until it starts dialing"
+	wait 2
+	dialgate "xxxxx"
+	wait 3
+	breakline
+	print "Press any button to go back"
+	dialGateBack = readkey
+	main
 end function
 
 // TODO: add actual settings for the script
 // Settings for the script
-PLC_Settings = function 
+OtherFunctions = function 
 	clear
 	print "PLC settings"
 	breakline
@@ -355,29 +361,29 @@ PLC_Settings = function
 			yield
 		end while
 	else if checkTimeChoice.val == 2 then
-		PLC_Settings
+		OtherFunctions
 		print "Enter a year"
 		checkTimeYearChoice = readline
 		if cantravel(checkTimeYearChoice.val) == 1 then
 			print cantravel(checkTimeYearChoice.val)
 			wait 2
-			PLC_Settings
+			OtherFunctions
 		else
 			print cantravel(checkTimeYearChoice.val)
 			wait 2
-			PLC_Settings
+			OtherFunctions
 		end if
 	else if checkTimeChoice.val == 3 then
 		cardiag
 		wait 3
-		PLC_Settings
+		OtherFunctions
 	else
 		main
 	end if
 end function
 
 // Menu to quickly create an HVD chip
-Create_Chip = function
+CreateChip = function
 	clear
 	cd "Item_HoloDisk(Clone)"
 	print "Select with numbers (0-2)"
@@ -391,20 +397,20 @@ Create_Chip = function
 	breakline
 	print "  - Press any other key to go back"
 	wait 0
-	Create_Chip_Choice = readkey
-	if Create_Chip_Choice.val == 1 then 
+	CreateChip_Choice = readkey
+	if CreateChip_Choice.val == 1 then 
 		clear
 		print "This command will create a file called startup.eee if it doesn't already exist"
 		breakline
 		wait 1.5
 		Overridedate_Command
-	else if Create_Chip_Choice.val == 2 then
+	else if CreateChip_Choice.val == 2 then
 		clear
 		print "This command will make it easier to make timechips. You'll only have to enter the year"
 		breakline
 		wait 1.5
 		Overridedate_Command_Year
-	else if Create_Chip_Choice.val == 3 then
+	else if CreateChip_Choice.val == 3 then
 		clear
 		print "Enter a name for the HVD chip"
 		breakline
@@ -427,14 +433,13 @@ Create_Chip = function
 			breakline
 			print "Did not set the chip name to " + chipName
 			wait
-			Create_Chip
+			CreateChip
 		end if
 	else 
 		cd "FPSController"
 		main
 	end if
 end function
-
 // Command to transfer the overridedate function to a chip
 Overridedate_Command = function
 	clear
@@ -540,9 +545,8 @@ Overridedate_Command = function
 	wait 3
 	print "Press any button to go back"
 	backKey = readkey
-	Create_Chip
+	CreateChip
 end function
-
 // Create a chip with only the year - can be quicker
 Overridedate_Command_Year = function
 	clear
@@ -574,9 +578,8 @@ Overridedate_Command_Year = function
 	wait 3
 	print "Press any button to go back"
 	backKey = readkey
-	Create_Chip
+	CreateChip
 end function
-
 // Check if the startup.eee file exists
 Check_Starup_File = function(linecount, value)
 	print "Checking if file exists and if it is empty"
@@ -605,7 +608,7 @@ Check_Starup_File = function(linecount, value)
 		wait 3
 		print "Press any button to go back"
 		backKey = readkey
-		Create_Chip
+		CreateChip
 	else if linecount < 1 then
 		print "Nothing in the file yet, writing."
 		wait
@@ -622,7 +625,7 @@ Check_Starup_File = function(linecount, value)
 		wait 3
 		print "Press any button to go back"
 		backKey = readkey
-		Create_Chip
+		CreateChip
 	else
 		print "startup.eee has existing lines, overwriting."
 		wait
@@ -645,12 +648,12 @@ Check_Starup_File = function(linecount, value)
 		wait 3
 		print "Press any button to go back"
 		backKey = readkey
-		Create_Chip
+		CreateChip
 	end if
 end function
 
 // Enable cheats
-Cococrab_Mode = function
+CococrabMode = function
 	print "Do you want to enable Cococrab Mode? (Cheats)"
 	breakline
 	print "(Y)es or (N)o"
@@ -671,7 +674,6 @@ Cococrab_Mode = function
 		main
 	end if
 end function
-
 // The menu for Cococrab Mode
 Cococrab_Menu = function
 	clear
@@ -724,7 +726,6 @@ Cococrab_Menu = function
 		main
 	end if
 end function
-
 // The second page of the Cococrab Menu
 Cococrab_Menu2 = function
 	clear
@@ -845,7 +846,6 @@ Cococrab_Menu2 = function
 		Cococrab_Menu
 	end if
 end function
-
 // Function to spawn items in cococrab mode
 Spawn_Items = function
 	clear
@@ -877,7 +877,6 @@ Spawn_Items = function
 		Cococrab_Menu
 	end if
 end function
-
 // Function to give yourself any amount of money
 Get_Money = function
 	clear
@@ -929,7 +928,6 @@ Get_Money = function
 		Cococrab_Menu
 	end if
 end function
-
 // Function to teleport
 Teleport = function
 	clear
@@ -1013,7 +1011,6 @@ Teleport = function
   	  	Cococrab_Menu
   end if
 end function
-
 // Function to change current time of day
 Change_Time = function
 	clear
@@ -1088,7 +1085,6 @@ Change_Time = function
 		Cococrab_Menu
 	end if
 end function
-
 // Function to change attributes of the player
 Player_Settings = function
 	clear
@@ -1152,7 +1148,6 @@ Player_Settings = function
 		Cococrab_Menu
 	end if
 end function
-
 // Function to change attributes of the car
 Car_Settings = function
 	clear
@@ -1181,10 +1176,6 @@ Car_Settings = function
 		Cococrab_Menu
 	end if
 end function
-
-
-
-
 
 // Start the script with the main menu
 main
