@@ -1,8 +1,7 @@
-// QUICK MENU
+// Quick Menu Script
 // By: Thers
-// Version: 1.4.5
 
-// variables
+// Variables
 connectionTime = 2
 
 // Convert month number to month shortname
@@ -41,7 +40,7 @@ main = function
 	breakline
 	print "  | |__| | |_| | | (__|   <    | |  | |  __/ | | | |_| |"
 	breakline
-	print "   \___\_\\__,_|_|\___|_|\_\   |_|  |_|\___|_| |_|\__,_|"
+	print "   \___\_\\__,_|_|\___|_|\_\   |_|  |_|\___|_| |_|\__,_| v1.5"
 	breakline
 	breakline
 	print "1 - Time Travel                2 - Space Travel"
@@ -334,14 +333,13 @@ CococrabMode = function
 	breakline
 	print "WARNING: Cococrab Mode will disable Steam Achievements for the current session"
 	breakline
-	wait 0
-	cheatsEnabled = readkey
+	enableCheats = readkey
 	
-	if cheatsEnabled == "y" then
+	if enableCheats == "y" then
 		cococrab
 		print "Cococrab Mode enabled"
 		wait
-		Cococrab_Menu
+		CococrabMenu
 	else 
 		print "Cococrab mode will not be enabled. Aborting..."
 		wait
@@ -349,23 +347,22 @@ CococrabMode = function
 	end if
 end function
 // The menu for Cococrab Mode
-Cococrab_Menu = function
+CococrabMenu = function
 	clear
 	print "Cococrab Mode is enabled"
 	breakline
 	print "To disable Cococrab mode reload the current save file"
 	breakline
-	print "Select with numbers (0-9)"
 	breakline
-	print "1 - Quick Save (Bugged and not working)"
+	print "1 - Give Money"
 	breakline
-	print "2 - Spawn Items"
+	print "2 - Teleport"
 	breakline
-	print "3 - Get Money"
+	print "3 - Spawn Items"
 	breakline
-	print "4 - Teleport"
+	print "4 - Change Time"
 	breakline
-	print "5 - Change Time"
+	print "5 - Change Time Speed"
 	breakline
 	print "6 - Player Setting"
 	breakline
@@ -373,186 +370,20 @@ Cococrab_Menu = function
 	breakline
 	print "9 - Next Page"
 	breakline
-	print "  - Press any other key to go back"
-	CococrabMenuChoice = readkey
+	print "    Press any other key to go back"
 
-	if CococrabMenuChoice.val == 1 then
-		breakline
-		cocosave
-		print "Saved Game"
-		wait
-		Cococrab_Menu
-	else if CococrabMenuChoice.val == 2 then
-		Spawn_Items
-	else if CococrabMenuChoice.val == 3 then
-		Get_Money
-	else if CococrabMenuChoice.val == 4 then
-		Teleport
-	else if CococrabMenuChoice.val == 5 then
-		Change_Time
-	else if CococrabMenuChoice.val == 6 then
-		Player_Settings
-	else if CococrabMenuChoice.val == 7 then 
-		Car_Settings
-	else if CococrabMenuChoice.val == 9 then
-		Cococrab_Menu2
-	else 
-		main
-	end if
-end function
-// The second page of the Cococrab Menu
-Cococrab_Menu2 = function
-	clear
-	print "Cococrab Mode is enabled"
-	breakline
-	print "Page 2"
-	breakline
-	print "Select with numbers (0-3)"
-	breakline
-	print "1 - Change time speed"
-	breakline
-	print "2 - Get current quest name and ID (Not currently supported)"
-	breakline
-	print "3 - Set current quest progress (Not currently supported)"
-	breakline
-	print "  - Press any other key to go back"
-	wait 0
-	CococrabMenu2Choice = readkey
-
-	if CococrabMenu2Choice.val == 1 then
-		clear
-		print "Change time speed to:"
-		breakline
-		print "1 - Default"
-		breakline
-		print "2 - 0.5x Speed"
-		breakline
-		print "3 - 2x Speed"
-		breakline
-		print "4 - 4x Speed"
-		breakline
-		print "5 - 10x Speed"
-		breakline
-		print "6 - Own input"
-		breakline
-		print "  - Press any other key to go back"
-		wait 0
-		changeTimeSpeedChoice = readkey
-		breakline
-
-		if changeTimeSpeedChoice.val == 1 then
-			cocospeed 1.0
-			wait
-			Cococrab_Menu2
-		else if changeTimeSpeedChoice.val == 2 then
-			cocospeed 0.5
-			wait
-			Cococrab_Menu2
-		else if changeTimeSpeedChoice.val == 3 then
-			cocospeed 2.0
-			wait
-			Cococrab_Menu2
-		else if changeTimeSpeedChoice.val == 4 then
-			cocospeed 4.0
-			wait
-			Cococrab_Menu2
-		else if changeTimeSpeedChoice.val == 5 then
-			cocospeed 10.0
-			wait
-			Cococrab_Menu2
-		else if changeTimeSpeedChoice.val == 6 then
-			breakline
-			print "Enter a value"
-			breakline
-			print "Values above 1,000,000 can cause severe lag. And values around 1,000,000,000,000 may freeze/crash the game. This may differ per device"
-			breakline
-			wait 0
-			changeTimeSpeedOwnInput = readline
-			cocospeed changeTimeSpeedOwnInput.val
-			wait
-			Cococrab_Menu2
-		else
-			Cococrab_Menu2
+	choice = readkey
+	functions = {1:@CococrabMenu_GiveMoney, 2:@CococrabMenu_Teleport, 3:@CococrabMenu_SpawnItems, 4:@CococrabMenu_ChangeTime, 5:@CococrabMenu_ChangeTimeSpeed, 6:@CococrabMenu_PlayerSettings, 7:@CococrabMenu_CarSettings, 9:@CococrabMenu2}
+	for i in functions.indexes
+		if choice.val == i then
+			functions[i]()
 		end if
-	else if CococrabMenu2Choice.val == 2 then
-		breakline
-		cocogetqname
-		wait 
-		Cococrab_Menu2
-	else if CococrabMenu2Choice.val == 3 then
-		clear
-		print "Set the quest ID"
-		wait 0
-		questID = readline
-		print "Set the quest to:"
-		breakline
-		print "1 - Accepted"
-		breakline
-		print "2 - Finished"
-		breakline
-		print "3 - Invisible"
-		breakline
-		print "4 - Inactive"
-		breakline
-		print "  - Press any other key to go back"
-		breakline
-		wait 0
-		questStatus = readkey
-
-		if questStatus.val == 1 then
-			questStatusLabel = "accepted"
-		else if questStatus.val == 2 then
-			questStatusLabel = "finished"
-		else if questStatus.val == 3 then
-			questStatusLabel = "invisible"
-		else if questStatus.val == 4 then
-			questStatusLabel = "inactive"
-		else
-			breakline
-			print "Canceled"
-			wait
-			Cococrab_Menu2
-		end if
-		cocoquest + questID + questStatusLabel
-		wait
-		Cococrab_Menu2
-	else
-		Cococrab_Menu
-	end if
+	end for
+	main
 end function
-// Function to spawn items in cococrab mode
-Spawn_Items = function
-	clear
-	print "1 - List all items and their ID's (known to cause some lag, please be patient) (bug, cannot scroll)"
-	breakline
-	print "2 - Cocogive. Give yourself an item by its ID"
-	breakline
-	print "  - Press any other key to go back"
-	wait 0
-	spawnItemsChoice = readkey
 
-	if spawnItemsChoice.val == 1 then
-		clear
-		cocoitems
-		yield
-		wait 0
-	else if spawnItemsChoice.val == 2 then
-		breakline
-		print "Enter an item ID"
-		wait 0
-		itemID_Choice = readline
-		cocogive itemID_Choice.val
-		breakline
-		print "Given the item " + itemID_Choice.val + ". Which will now be in front of you on the ground"
-		wait 2
-		clear
-		Spawn_Items
-	else
-		Cococrab_Menu
-	end if
-end function
 // Function to give yourself any amount of money
-Get_Money = function
+CococrabMenu_GiveMoney = function
 	clear
 	print "What kind of money do you want to get?"
 	breakline
@@ -564,46 +395,55 @@ Get_Money = function
 	breakline
 	print "4 - All"
 	breakline
-	print "  - Press any other key to go back"
-	wait 0
-	moneyKindChoice = readkey
-	
-	if moneyKindChoice.val == 1 then
-		breakline
-		print "How much money do you want to get?"
-		breakline
-		wait 0
-		moneyAmountChoice = readline
-		cocoshilling moneyAmountChoice.val	
-	else if moneyKindChoice.val == 2 then
-		breakline
-		print "How much money do you want to get?"
-		breakline
-		wait 0
-		moneyAmountChoice = readline
-		cocodollar moneyAmountChoice.val
-	else if moneyKindChoice.val == 3 then
-		breakline
-		print "How much money do you want to get?"
-		breakline
-		wait 0
-		moneyAmountChoice = readline
-		cocoimperial moneyAmountChoice.val
-	else if moneyKindChoice.val == 4 then
-		breakline
-		print "How much money do you want to get?"
-		breakline
-		wait 0
-		moneyAmountChoice = readline
-		cocoshilling moneyAmountChoice.val
-    	cocodollar moneyAmountChoice.val
-    	cocoimperial moneyAmountChoice.val
-	else
-		Cococrab_Menu
-	end if
+	print "    Press any other key to go back"
+	choice = readkey
+	functions = {1:@CococrabMenu_GiveMoney_Shillings, 2:@CococrabMenu_GiveMoney_Dollars, 3:@CococrabMenu_GiveMoney_Imperial, 4:@CococrabMenu_GiveMoney_All}
+	for i in functions.indexes
+		if choice.val == i then
+			functions[i]()
+			wait
+			CococrabMenu_GiveMoney
+		end if
+	end for
+	CococrabMenu
 end function
+CococrabMenu_GiveMoney_Shillings = function
+	breakline
+	print "How much shillings do you want to get?"
+	breakline
+	wait 0
+	moneyAmountChoice = readline
+	cocoshilling moneyAmountChoice.val
+end function
+CococrabMenu_GiveMoney_Dollars = function
+	breakline
+	print "How much dollars do you want to get?"
+	breakline
+	wait 0
+	moneyAmountChoice = readline
+	cocodollar moneyAmountChoice.val
+end function
+CococrabMenu_GiveMoney_Imperial = function
+	breakline
+	print "How much imperial dollars do you want to get?"
+	breakline
+	wait 0
+	moneyAmountChoice = readline
+	cocoimperial moneyAmountChoice.val
+end function
+CococrabMenu_GiveMoney_All = function
+	breakline
+	print "How much money do you want to get?"
+	breakline
+	wait 0
+	moneyAmountChoice = readline
+	cocoshilling moneyAmountChoice.val
+	cocodollar moneyAmountChoice.val
+	cocoimperial moneyAmountChoice.val
+end function
+
 // Function to teleport
-Teleport = function
+CococrabMenu_Teleport = function
 	clear
 	print "Where do you want to teleport?"
 	breakline
@@ -625,68 +465,112 @@ Teleport = function
   	breakline
   	print "8 - Uroruh Peak"
 	breakline
-	print "  - Press any other key to go back"
+	print "    Press any other key to go back"
   	breakline
   	wait 0
-  	teleportChoice = readkey
+  	choice = readkey
   	clear
-	if teleportChoice.val == 1 then
-  	  	// Default starting location by the big bridge. Car and player.
-  	  	cocotransport 20, 44, -1127
-  	  	cococarport 26, 42, -1128
-		Cococrab_Menu
-  	else if teleportChoice.val == 2 then
-		//Bills garage
-  		if getyear < 1940 or getyear > 2026 then
-  			cocoyear 2014
-  			yield
-  		end if
-  		cocotransport -5, 0, -125
-  		cococarport -9, -2, -128 
-		Cococrab_Menu
-	else if teleportChoice.val == 3 then
-		//Pine City garage
-	    if getyear < 2045 or getyear > 2074 then
-	    	cocoyear 2060
-	    	yield
-	    end if
-	    cocotransport -10, 182, -100 
-	    cococarport -16, 180, -99
-		Cococrab_Menu
-	else if teleportChoice.val == 4 then
-	    //E. R. Athors Lab.
-	    cocotransport 0,0,0
-		Cococrab_Menu
-	else if teleportChoice.val == 5 then
-	    //Bridgetown (taxi sitting area)
-	    if getyear < 2007 or getyear > 2026 then
-			cocoyear 2014
+
+	functions = {1:@CococrabMenu_Teleport_StartLocation, 2:@CococrabMenu_Teleport_BillsGarage, 3:@CococrabMenu_Teleport_PineCityGarage, 4:@CococrabMenu_Teleport_ERAthorsLab, 5:@CococrabMenu_Teleport_Bridgetown, 6:@CococrabMenu_Teleport_CapeDun, 7:@CococrabMenu_Teleport_CafeSkylight, 8:@CococrabMenu_Teleport_UroruhPeak}
+	for i in functions.indexes
+		if choice.val == i then
+			functions[i]()
+			wait
+			CococrabMenu_Teleport
 		end if
-	    cocotransport -55, 73, 2100
-		Cococrab_Menu
-	else if teleportChoice.val == 6 then
-	    //Cape Dun
-	    cocotransport -223, -7, 2044
-		Cococrab_Menu
-	else if teleportChoice.val == 7 then
-	    //Just outside Caffè Skylight
-	    if getyear < 2045 or getyear > 2074 then
-			cocoyear 2060 
-		end if	
-  	  	cocotransport 225, 215, 0
-		Cococrab_Menu
-	else if teleportChoice.val == 8 then
-  	  	//Mt. Uroruh Peak
-  	  	cocotransport -20, 500, 1160
-		Cococrab_Menu
-  	else if teleportChoice.val == 9 then
-		Teleport2
-	else
-  	  	Cococrab_Menu
-  end if
+	end for
+	CococrabMenu
 end function
+CococrabMenu_Teleport_StartLocation = function
+	// Default starting location by the big bridge. Car and player.
+	cocotransport 20, 44, -1127
+	cococarport 26, 42, -1128
+end function
+CococrabMenu_Teleport_BillsGarage = function
+	//Bills garage
+	if getyear < 1940 or getyear > 2026 then
+		cocoyear 2014
+		yield
+	end if
+	cocotransport -5, 0, -125
+	cococarport -9, -2, -128
+end function
+CococrabMenu_Teleport_PineCityGarage = function
+	//Pine City garage
+	if getyear < 2045 or getyear > 2074 then
+		cocoyear 2060
+		yield
+	end if
+	cocotransport -10, 182, -100 
+	cococarport -16, 180, -99
+end function
+CococrabMenu_Teleport_ERAthorsLab = function
+	//E. R. Athors Lab.
+	cocotransport 0,0,0
+end function
+CococrabMenu_Teleport_Bridgetown = function
+	//Bridgetown (taxi sitting area)
+	if getyear < 2007 or getyear > 2026 then
+		cocoyear 2014
+	end if
+	cocotransport -55, 73, 2100
+end function
+CococrabMenu_Teleport_CapeDun = function
+	//Cape Dun
+	cocotransport -223, -7, 2044
+end function
+CococrabMenu_Teleport_CafeSkylight = function
+	//Just outside Caffè Skylight
+	if getyear < 2045 or getyear > 2074 then
+		cocoyear 2060 
+	end if	
+	cocotransport 225, 215, 0
+end function
+CococrabMenu_Teleport_UroruhPeak = function
+	//Mt. Uroruh Peak
+	cocotransport -20, 500, 1160
+end function
+
+// Function to spawn items in cococrab mode
+CococrabMenu_SpawnItems = function
+	clear
+	print "1 - List all items and their ID's (known to cause some lag, please be patient) (cannot scroll)"
+	breakline
+	print "2 - Cocogive. Give yourself an item by its ID"
+	breakline
+	print "    Press any other key to go back"
+	wait 0
+	choice = readkey
+	functions = {1:@CococrabMenu_SpawnItems_List, 2:@CococrabMenu_SpawnItems_GiveItem}
+	for i in functions.indexes
+		if choice.val == i then
+			functions[i]()
+			wait
+			CococrabMenu_SpawnItems
+		end if
+	end for
+	CococrabMenu
+end function
+CococrabMenu_SpawnItems_List = function
+	clear
+	cocoitems
+	wait 0
+end function
+CococrabMenu_SpawnItems_GiveItem = function
+	breakline
+	print "Enter an item ID"
+	wait 0
+	itemID_Choice = readline
+	cocogive itemID_Choice.val
+	breakline
+	print "Given the item " + itemID_Choice.val + ". Which will now be in front of you on the ground"
+	wait 2
+	clear
+	SpawnItems
+end function
+
 // Function to change current time of day
-Change_Time = function
+CococrabMenu_ChangeTime = function
 	clear
 	print "Select desired time of day"
   	breakline
@@ -709,62 +593,82 @@ Change_Time = function
 	breakline
 	print "9 - Late Night/Early Morning - 03:00 AM"
 	breakline
-	print "  - Press any other key to go back"
+	print "    Press any other key to go back"
+	breakline
+	choice = readkey
+	functions = {2:95, 3:150, 4:180, 5:225, 6:265, 7:290, 8:0, 9:45}
+	for i in functions.indexes
+		if choice.val == 1 then
+			CococrabMenu_ChangeTime_EnterTime
+		end if
+		if choice.val == i then
+			cocotime functions[i]
+		end if
+		wait
+		CococrabMenu
+	end for
+	CococrabMenu
+end function
+CococrabMenu_ChangeTime_EnterTime = function
+	clear
+	print "Select a number from 0-360"
 	breakline
 	wait 0
-	changeTimeChoice = readkey
-
-	if changeTimeChoice.val == 1 then
-  	  	clear
-		print "Select a number from 0-360"
-		breakline
-		wait 0
-		changeTimeValue = readline
-		cocotime changeTimeValue.val
-		wait
-		Change_Time
-  	else if changeTimeChoice.val == 2 then
-		cocotime 95
-		wait
-		Change_Time
-	else if changeTimeChoice.val == 3 then
-		cocotime 150
-		wait
-		Change_Time
-	else if changeTimeChoice.val == 4 then
-		cocotime 180
-		wait
-		Change_Time
-	else if changeTimeChoice.val == 5 then
-		cocotime 225
-		wait
-		Change_Time
-	else if changeTimeChoice.val == 6 then
-		cocotime 265
-		wait
-		Change_Time
-	else if changeTimeChoice.val == 7 then
-		cocotime 290
-		wait
-		Change_Time
-	else if changeTimeChoice.val == 8 then
-		cocotime 0
-		wait
-		Change_Time
-	else if changeTimeChoice.val == 9 then
-		cocotime 45
-		wait
-		Change_Time
-	else
-		Cococrab_Menu
-	end if
+	changeTimeValue = readline
+	cocotime changeTimeValue.val
+	wait
+	CococrabMenu_ChangeTime
 end function
+
+CococrabMenu_ChangeTimeSpeed = function
+	clear
+	print "Change time speed to:"
+	breakline
+	print "1 - Own input"
+	breakline
+	print "2 - Default"
+	breakline
+	print "3 - 0.5x Speed"
+	breakline
+	print "4 - 2x Speed"
+	breakline
+	print "5 - 4x Speed"
+	breakline
+	print "6 - 10x Speed"
+	breakline
+	print "  - Press any other key to go back"
+
+	choice = readkey
+	functions = {2:1.0, 3:0.5, 4:2.0, 5:4.0, 6:10.0}
+	for i in functions.indexes
+		if choice.val == 1 then
+			CococrabMenu_ChangeTimeSpeed_Enter
+		end if
+		if choice.val == i then
+			print "button: " + choice.val
+			print "i: " + i
+			breakline
+			cocospeed functions[i]
+		end if
+	end for
+	wait
+	CococrabMenu_ChangeTimeSpeed
+end function
+CococrabMenu_ChangeTimeSpeed_Enter = function
+	clear
+	print "Enter a value"
+	breakline
+	print "Values above 1,000,000 can cause severe lag. And values around 1,000,000,000,000 may freeze/crash the game. This may differ per device"
+	breakline
+	wait 0
+	changeTimeSpeedOwnInput = readline
+	cocospeed changeTimeSpeedOwnInput.val
+end function
+
 // Function to change attributes of the player
-Player_Settings = function
+CococrabMenu_PlayerSettings = function
 	clear
 	print "Player Settings"
-	breakline
-	print "Select with numbers (0-4)"
 	breakline
 	breakline
 	print "1 - Heal player"
@@ -775,58 +679,54 @@ Player_Settings = function
 	breakline
 	print "4 - Set current location (Not currently supported)"
 	breakline
-	print "  - Press any other key to go back"
-	wait 0
-	playerSettingsChoice = readkey
-	if playerSettingsChoice.val == 1 then
-		breakline
-		cocoheal
-		print "Player Healed"
-		wait 2
-		Player_Settings
-	else if playerSettingsChoice.val == 2 then
-		breakline
-		cocorads
-		print "Player cleared of radiation"
-		wait 2
-		Player_Settings
-	else if playerSettingsChoice.val == 3 then
-		breakline
-		print "Current location is: "
-		cocotransport
-		curLocKey = readkey
-		if curLocKey == 0 then
-			return false
+	print "    Press any other key to go back"
+	breakline
+	choice = readkey
+	functions = {1:@CococrabMenu_PlayerSettings_Heal, 2:@CococrabMenu_PlayerSettings_ClearRadiation, 3:@CococrabMenu_PlayerSettings_GetLocation, 4:@CococrabMenu_PlayerSettings_SetLocation}
+	for i in functions.indexes
+		if choice.val == i then
+			functions[i]()
 		end if
-	else if playerSettingsChoice.val == 4 then
-		print "Enter a location:"
-		breakline
-		print "(X)"
-		breakline
-		print "(Y)"
-		breakline
-		print "(Z)"
-		breakline
-		wait 0
-		playerX = readline
-		wait 0
-		playerY = readline
-		wait 0
-		playerZ = readline
-		playerLocation = playerX.val+", "+playerY.val+", "+playerZ.val
-		print "cocotransport "+playerLocation
-		breakline
-		cocotransport playerLocation
-	else
-		Cococrab_Menu
-	end if
+	end for
+	CococrabMenu
 end function
+CococrabMenu_PlayerSettings_Heal = function
+	breakline
+	cocoheal
+	print "Player Healed"
+	wait 2
+	PlayerSettings
+end function
+CococrabMenu_PlayerSettings_ClearRadiation = function
+	breakline
+	cocorads
+	print "Player cleared of radiation"
+	wait 2
+	PlayerSettings
+end function
+CococrabMenu_PlayerSettings_GetLocation = function
+	breakline
+	print "Current location is: "
+	cocotransport
+	wait 
+	CococrabMenu_PlayerSettings
+end function
+CococrabMenu_PlayerSettings_SetLocation = function
+	print "Enter a location:"
+	breakline
+	print "X, Y, Z"
+	breakline
+	choice = readline
+	playerLocation = choice
+	print "cocotransport "+playerLocation
+	breakline
+	cocotransport playerLocation
+end function
+
 // Function to change attributes of the car
-Car_Settings = function
+CococrabMenu_CarSettings = function
 	clear
 	print "Car Settings"
-	breakline
-	print "Select with numbers (0-3)"
 	breakline
 	breakline
 	print "1 - Remove car heat"
@@ -835,19 +735,117 @@ Car_Settings = function
 	breakline
 	print "3 - Set current car location (Not currently supported)"
 	breakline
-	print "  - Press any other key to go back"
-	wait 0
-	carSettingsChoice = readkey
+	print "    Press any other key to go back"
+	choice = readkey
+	functions = {1:@CococrabMenu_CarSettings_CoolCar, 2:@CococrabMenu_CarSettings_GetLocation, 3:@CococrabMenu_CarSettings_SetLocation}
+	for i in functions.indexes
+		if choice.val == i then
+			functions[i]()
+		end if
+	end for
+	CococrabMenu
+end function
+CococrabMenu_CarSettings_CoolCar = function
+	breakline
+	cocoheataway
+	print "Car cooled down"
+	wait 2
+	CarSettings
+end function
+CococrabMenu_CarSettings_GetLocation = function
+	breakline
+	print "Current location is: "
+	cococarport
+	wait 
+	CococrabMenu_PlayerSettings
+end function
+CococrabMenu_CarSettings_SetLocation = function
+	print "Enter a location:"
+	breakline
+	print "X, Y, Z"
+	breakline
+	choice = readline
+	carLocation = choice
+	print "cococarport " + carLocation
+	breakline
+	cococarport carLocation
+end function
 
-	if carSettingsChoice.val == 1 then
-		breakline
-		cocoheataway
-		print "Set car temperature to 0"
-		wait 2
-		Car_Settings
+// The second page of the Cococrab Menu
+CococrabMenu2 = function
+	clear
+	print "Cococrab Mode is enabled"
+	breakline
+	print "Page 2"
+	breakline
+	breakline
+	print "1 - Quick Save (Not working)"
+	breakline
+	print "2 - Get current quest name and ID (Not currently supported)"
+	breakline
+	print "3 - Set current quest progress (Not currently supported)"
+	breakline
+	print "  - Press any other key to go back"
+
+
+	choice = readkey
+	functions = {1:@CococrabMenu2, 2:@CococrabMenu2, 3:@CococrabMenu2}
+	for i in functions.indexes
+		if choice.val == i then
+			functions[i]()
+			wait
+			CococrabMenu2
+		end if
+	end for
+	CococrabMenu
+end function
+// Save Game
+CococrabMenu2_QuickSave = function
+	breakline
+	cocosave
+	print "Saved Game"
+end function
+CococrabMenu2_GetQuest = function
+	breakline
+	cocogetqname
+	wait 
+	CococrabMenu2
+end function
+CococrabMenu2_SetQuest = function
+	clear
+	print "Set the quest ID"
+	wait 0
+	questID = readline
+	print "Set the quest to:"
+	breakline
+	print "1 - Accepted"
+	breakline
+	print "2 - Finished"
+	breakline
+	print "3 - Invisible"
+	breakline
+	print "4 - Inactive"
+	breakline
+	print "  - Press any other key to go back"
+	breakline
+	wait 0
+	questStatus = readkey
+
+	if questStatus.val == 1 then
+		questStatusLabel = "accepted"
+	else if questStatus.val == 2 then
+		questStatusLabel = "finished"
+	else if questStatus.val == 3 then
+		questStatusLabel = "invisible"
+	else if questStatus.val == 4 then
+		questStatusLabel = "inactive"
 	else
-		Cococrab_Menu
+		breakline
+		print "Canceled"
+		wait
+		CococrabMenu2
 	end if
+	cocoquest + questID + questStatusLabel
 end function
 
 // Menu to quickly create an HVD chip
@@ -1131,14 +1129,16 @@ OtherFunctions = function
 	breakline
 	print "1 - Timegraph"
 	breakline
-	print "2 - Check if you can travel to a certain year (currently not working properly)"
+	print "2 - Check if you can travel to a certain year"
 	breakline
 	print "3 - Car Diagnostics"
+	breakline
+	print "4 - Last location/date traveled to with dimension gate"
 	breakline
 	print "    Press any other key to go back"
 	breakline
 	choice = readkey
-	functions = {1:@OtherFunctions_Timegraph, 2:@OtherFunctions_CheckYear, 3:@OtherFunctions_CarDiag}
+	functions = {1:@OtherFunctions_Timegraph, 2:@OtherFunctions_CheckYear, 3:@OtherFunctions_CarDiag, 4:@OtherFunctions_LastTraveled}
 	for i in functions.indexes
 		if choice.val == i then
 			functions[i]()
@@ -1153,18 +1153,34 @@ OtherFunctions_Timegraph = function
 	wait 0
 end function
 OtherFunctions_CheckYear = function
-	OtherFunctions // currently disables function
 	print "Enter a year"
-	checkTimeYearChoice = readline
-	if cantravel(checkTimeYearChoice.val) == 1 then
-		print cantravel(checkTimeYearChoice.val)
+	choice = readline
+	breakline
+	if choice[0] == "-" then
+		strippedchoice = slice(choice, 1)
+	else
+		strippedchoice = choice
+	end if
+	if cantravel(choice.val) == 1 and strippedchoice.len <= 4 then
+		print "Traveling to the year " + choice.val + " is possible"
 		wait 2
 		OtherFunctions
 	else
-		print cantravel(checkTimeYearChoice.val)
+		print "Traveling to the year " + choice.val + " is not possible"
 		wait 2
 		OtherFunctions
 	end if
+end function
+OtherFunctions_LastTraveled = function
+	print "Last traveled to:"
+	breakline
+	if countlines("Travel History") < 1 then
+		print "Could not find any travel history"
+	else
+		print readfile("Travel History", countlines("Travel History")-1)
+	end if
+	wait 2
+	OtherFunctions
 end function
 OtherFunctions_CarDiag = function
 	cardiag
