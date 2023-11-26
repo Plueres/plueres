@@ -1,5 +1,7 @@
 // Quick Menu Script
 // By: Thers
+// TODO: add the sign for checks that use negative numbers
+// TODO: add actual settings for the script
 
 // Variables
 connectionTime = 2
@@ -325,6 +327,7 @@ RecallSpaceGate = function
 	main
 end function
 
+// TODO: add UI for cococrab
 // Enable cheats
 CococrabMode = function
 	print "Do you want to enable Cococrab Mode? (Cheats)"
@@ -971,7 +974,7 @@ CreateChip_Overridedate = function
 	end if
 	Overridedate_Pos_Value = day + month + year + hour + minute
 	if Overridedate_Pos_Value.len == 12 then
-		Check_Starup_File(lines, Overridedate_Value)
+		CheckStartupFile(lines, Overridedate_Value)
 	else
 		print "ERROR: Invalid input. Aborting"
 		cd "FPSController"
@@ -1012,7 +1015,7 @@ CreateChip_OverridedateYear = function
 		lines = 0
 	end if
 	setlabel epoch + year + "chip"
-	Check_Starup_File(lines, Overridedate_Value)
+	CheckStartupFile(lines, Overridedate_Value)
 	breakline
 	cd "FPSController"
 	wait 3
@@ -1119,8 +1122,6 @@ CheckStartupFile = function(linecount, value)
 		CreateChip
 	end if
 end function
-
-// TODO: add actual settings for the script
 
 // Settings for the script
 OtherFunctions = function 
