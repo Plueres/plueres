@@ -42,7 +42,7 @@ main = function
 	breakline
 	print "  | |__| | |_| | | (__|   <    | |  | |  __/ | | | |_| |"
 	breakline
-	print "   \___\_\\__,_|_|\___|_|\_\   |_|  |_|\___|_| |_|\__,_| v1.5"
+	print "   \___\_\\__,_|_|\___|_|\_\   |_|  |_|\___|_| |_|\__,_| v1.5.1"
 	breakline
 	breakline
 	print "1 - Time Travel                2 - Space Travel"
