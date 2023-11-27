@@ -2,6 +2,7 @@
 // By: Thers
 // TODO: add the sign for checks that use negative numbers
 // TODO: add actual settings for the script
+// TODO: when creating hvd chip, remove Label.eee file
 
 // Variables
 connectionTime = 2
