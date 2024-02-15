@@ -4,7 +4,7 @@
 
 <img src="https://github-readme-streak-stats.herokuapp.com/?user=Plueres&theme=vision-friendly-dark&hide_border=true" width="50%" ><img width="50%" src="https://github-readme-stats.vercel.app/api?username=Plueres&theme=vision-friendly-dark&show_icons=true&hide_border=true&count_private=true&include_all_commits=true" />
 
-[![spotify-github-profile](https://spotify-github-profile.vercel.app/api/view?uid=rr6dpm9sb1r6419kubm7jbw4s&cover_image=true&theme=novatorem&bar_color=53b14f&bar_color_cover=true)](https://github.com/kittinan/spotify-github-profile)
+[![spotify-github-profile](https://spotify-github-profile.vercel.app/api/view?uid=rr6dpm9sb1r6419kubm7jbw4s&cover_image=true&theme=natemoo-re&show_offline=true&background_color=1ed760&interchange=true&bar_color=53b14f&bar_color_cover=true)](https://github.com/kittinan/spotify-github-profile)
 
 ### Links
 README widgets: https://github.com/madushadhanushka/github-readme
